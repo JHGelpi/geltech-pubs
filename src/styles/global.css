@@ -104,5 +104,25 @@ th, td { border: 1px solid var(--border); padding: var(--s1) var(--s2); text-ali
 .intro h1 { margin: 0; }
 .intro p { margin: 0; }
 .headshot { border-radius: 50%; }
-.inline-list { display: flex; flex-wrap: wrap; gap: var(--s3); list-style: none; padding: 0; }
 .cv h3 { font-size: 1.05rem; }
+.cv h4 { color: var(--muted); margin-top: var(--s4); }
+
+/* About: CV header links, skill chips, tabs, return-to-top. */
+.social-links { display: flex; flex-wrap: wrap; gap: var(--s2); list-style: none; padding: 0; margin: var(--s2) 0 0; }
+.social-links a { display: inline-flex; padding: var(--s1); color: var(--muted); }
+.social-links a:hover { color: var(--accent); }
+.skills ul { display: flex; flex-wrap: wrap; gap: var(--s2); list-style: none; padding: 0; }
+.skills li { padding: var(--s1) var(--s3); border: 1px solid var(--border); border-radius: 999px; background: var(--code-bg); font-size: 0.9rem; }
+.tabs { display: flex; flex-wrap: wrap; margin-block: var(--s4) var(--s3); border-bottom: 1px solid var(--border); }
+.tabs [role="tab"] {
+  padding: var(--s2) var(--s3); border: 0; border-bottom: 3px solid transparent; background: none;
+  color: var(--muted); font: inherit; font-size: 0.95rem; cursor: pointer;
+}
+.tabs [role="tab"]:hover { color: var(--fg); }
+.tabs [role="tab"][aria-selected="true"] { border-bottom-color: var(--accent); color: var(--accent); font-weight: 600; }
+.return-to-top {
+  position: fixed; right: var(--s3); bottom: var(--s3); display: grid; place-items: center;
+  width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--accent); color: var(--bg);
+  font-size: 1.25rem; text-decoration: none; visibility: hidden; opacity: 0; transition: opacity 0.2s, visibility 0.2s;
+}
+.return-to-top.visible { visibility: visible; opacity: 1; }

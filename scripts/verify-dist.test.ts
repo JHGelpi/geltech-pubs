@@ -33,6 +33,12 @@ test('clean dist passes', () => {
   assert.deepEqual(verifyDist(files, ['Red Hat']), []);
 });
 
+test('only /about/ may ship a client script (approved CV tabs)', () => {
+  const tag = '<script type="module">tabs()</script>';
+  assert.deepEqual(verifyDist(new Map([['about/index.html', `<head></head><body>${tag}</body>`]]), []), []);
+  assert.equal(verifyDist(new Map([['blog/a/index.html', tag]]), []).length, 1);
+});
+
 test('employer match is case-insensitive on word boundaries', () => {
   assert.equal(verifyDist(new Map([['blog/a/index.html', 'I worked at RED HAT.']]), ['Red Hat']).length, 1);
   assert.equal(verifyDist(new Map([['blog/a/index.html', 'Reddit hats']]), ['Red Hat']).length, 0);
