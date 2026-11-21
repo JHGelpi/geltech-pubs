@@ -1,8 +1,9 @@
-# geltech.dev Personal Site & Blog — Product Spec v0.4
+# geltech.dev Personal Site & Blog — Product Spec v0.5
 
 **Owner:** Wes · **Status:** Ready for Claude Code · **Last updated:** 2026-11-21
 
 **Changelog**
+- v0.5: /about/ mirrors the CV site (jhgelpi.github.io/cv): same sections, CV sections as tabs (approved client JS, /about/ only), email address and Bluesky link shown; phone and city stay off the site.
 - v0.4: CV moved onto /about/ (employer names allowed only there); bio field; www redirect via dashboard rule; custom domain declared in wrangler.jsonc.
 - v0.3: All open questions resolved: the root is a placeholder (safe to replace), the repo is public, the design is minimal and text-first, and the byline is full name with a generic role (employer not named). Added a single site config file and design requirements.
 - v0.2: URL decision locked: personal site at the root, blog at `/blog`; apps stay on their own subdomains (e.g. `dishkept.geltech.dev`). DNS is already on Cloudflare.
@@ -54,7 +55,7 @@ Wes wants a personal site with a blog on his own domain, to build a professional
 - `https://geltech.dev/blog/`: post index, newest first
 - `https://geltech.dev/blog/<slug>/`: individual post
 - `https://geltech.dev/blog/tags/<tag>/`: posts by tag
-- `https://geltech.dev/about/`: longer bio, focus areas, links (LinkedIn, GitHub, X)
+- `https://geltech.dev/about/`: bio, email, links (LinkedIn, GitHub, X, Bluesky) and the full CV with its sections as tabs
 - `https://geltech.dev/projects/`: cards for apps and projects, linking out (Dishkept → `https://dishkept.geltech.dev`)
 - `https://geltech.dev/rss.xml`, `/sitemap-index.xml`, `/robots.txt`
 - `www.geltech.dev` → 301 to the bare domain; `*.workers.dev` must not be indexable (redirect or `noindex`). The `www` redirect is a Cloudflare Redirect Rule created in the dashboard; the apex is declared as a Custom Domain in `wrangler.jsonc`.

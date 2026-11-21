@@ -1,4 +1,4 @@
-// Post-build guard: fails if dist/ ships client JS, the sample draft, or an employer name outside /about/'s body.
+// Post-build guard: fails if dist/ ships client JS (outside /about/), the sample draft, or an employer name outside /about/'s body.
 // Usage: node scripts/verify-dist.ts dist
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -23,12 +23,13 @@ export function verifyDist(files: Map<string, string>, employers: string[]): str
     // shortcut: hard-coded sample slug, upgrade to reading draft slugs from src/content/blog when more drafts exist
     if (path.includes('hello-world')) problems.push(`${path}: draft sample post was built`);
 
+    const isAbout = path === 'about/index.html';
+    // The CV tabs on /about/ are the one approved page script (CLAUDE.md rule 2).
     for (const tag of content.match(/<script\b[^>]*>/g) ?? []) {
-      if (!tag.includes('application/ld+json')) problems.push(`${path}: client script ${tag}`);
+      if (!tag.includes('application/ld+json') && !isAbout) problems.push(`${path}: client script ${tag}`);
     }
 
     // Only /about/'s <body> (the CV) may name employers (FR-0a).
-    const isAbout = path === 'about/index.html';
     const checked = isAbout ? (content.split('</head>')[0] ?? '') : content;
     for (const name of employers) {
       if (mentions(checked, name) || mentions(checked, escapeHtml(name))) {
