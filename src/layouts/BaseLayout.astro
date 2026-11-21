@@ -1,0 +1,27 @@
+---
+import BaseHead, { type Props as HeadProps } from '../components/BaseHead.astro';
+import Nav from '../components/Nav.astro';
+import { site } from '../site.config';
+
+export type Props = HeadProps;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead {...Astro.props} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="site-name" href="/">{site.name}</a>
+      <Nav />
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <p>© {new Date().getFullYear()} {site.name} · <a href="/rss.xml">RSS</a></p>
+    </footer>
+  </body>
+</html>
