@@ -5,7 +5,7 @@ export const site = {
   bio: "<2–3 generic sentences>",
   url: "https://geltech.dev",
   links: {
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/wgelpi",
     github: "https://github.com/JHGelpi",
     x: "",
   } as Record<string, string>,
