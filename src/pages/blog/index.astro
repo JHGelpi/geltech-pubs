@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { site } from '../../site.config';
+import { getPublishedPosts } from '../../lib/content';
+
+const posts = await getPublishedPosts();
+---
+
+<BaseLayout title="Blog" description={`Writing by ${site.name} on data engineering and data platform leadership.`}>
+  <h1>Blog</h1>
+  <PostList posts={posts} />
+</BaseLayout>

@@ -39,7 +39,7 @@ These come from the spec and must hold in every change:
 2. **Near-zero client JS.** Allowed: theme toggle, code-block copy button, Mermaid only on pages that use it. Anything else needs approval.
 3. **Drafts never ship.** `draft: true` posts are excluded from production pages, tags, RSS, sitemap and OG images. They do render in `npm run dev` and in PR previews.
 4. **Identity comes only from `src/site.config.ts`.** Never hard-code the author's name or links elsewhere.
-5. **Never name an employer** anywhere: copy, About page, JSON-LD (`worksFor` is not used).
+5. **Never name an employer** outside the CV section of `/about/` (`src/content/pages/cv.md`). Not in other copy, not in `/about/`'s meta or share card, never in JSON-LD (`worksFor` is not used).
 6. **Slugs are permanent.** Slug comes from the file name. Never change the slug of a published post without adding a redirect.
 7. **Domain safety (G-1…G-5).** The site owns only the `geltech.dev` apex and `www`. Never create, change or delete any other DNS record, especially `dishkept`. HSTS must **not** use `includeSubDomains`. Cookies, if any, are scoped to `geltech.dev`, never `.geltech.dev`.
 8. **Accessibility:** WCAG 2.2 AA. Semantic HTML, visible focus, AA contrast in both themes.

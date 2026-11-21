@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  projects: CollectionEntry<'projects'>[];
+  heading?: 'h2' | 'h3';
+}
+const { projects, heading: H = 'h2' } = Astro.props;
+---
+
+{projects.length === 0 ? (
+  <p class="muted">Projects coming soon.</p>
+) : (
+  projects.map((p) => (
+    <article class="project">
+      <H><a href={p.data.url}>{p.data.name}</a></H>
+      <p>{p.data.summary}</p>
+      <p class="muted">
+        Status: {p.data.status}
+        {p.data.repo && <> · <a href={p.data.repo}>Source</a></>}
+      </p>
+    </article>
+  ))
+)}

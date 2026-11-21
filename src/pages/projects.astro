@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectList from '../components/ProjectList.astro';
+import { site } from '../site.config';
+import { getProjects } from '../lib/content';
+
+const projects = await getProjects();
+---
+
+<BaseLayout title="Projects" description={`Apps and projects built by ${site.name}.`}>
+  <h1>Projects</h1>
+  <ProjectList projects={projects} />
+</BaseLayout>
