@@ -2,8 +2,10 @@
 import sharp from 'sharp';
 import { site } from '../src/site.config.ts';
 import { configProblems } from '../src/lib/config-guard.ts';
+import { employersFromCv } from './verify-dist.ts';
+import { readFileSync } from 'node:fs';
 
-const problems = configProblems(site);
+const problems = configProblems(site, employersFromCv(readFileSync('src/content/pages/cv.md', 'utf8')));
 if (problems.length) {
   console.error('Fill in src/site.config.ts first:\n' + problems.join('\n'));
   process.exit(1);

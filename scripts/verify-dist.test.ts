@@ -32,3 +32,8 @@ test('clean dist passes', () => {
   const files = new Map([['about/index.html', '<head><script type="application/ld+json">{}</script></head><body>Red Hat</body>']]);
   assert.deepEqual(verifyDist(files, ['Red Hat']), []);
 });
+
+test('employer match is case-insensitive on word boundaries', () => {
+  assert.equal(verifyDist(new Map([['blog/a/index.html', 'I worked at RED HAT.']]), ['Red Hat']).length, 1);
+  assert.equal(verifyDist(new Map([['blog/a/index.html', 'Reddit hats']]), ['Red Hat']).length, 0);
+});

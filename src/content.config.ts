@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { frontmatterIssues } from './lib/posts';
 
 const blog = defineCollection({
   loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
@@ -13,6 +14,8 @@ const blog = defineCollection({
     draft: z.boolean().default(false),
     heroImage: z.string().optional(),
     canonicalUrl: z.url().optional(),
+  }).superRefine((data, ctx) => {
+    for (const issue of frontmatterIssues(data, new Date())) ctx.addIssue({ code: 'custom', path: [issue.path], message: issue.message });
   }),
 });
 
