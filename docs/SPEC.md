@@ -1,8 +1,9 @@
-# geltech.dev Personal Site & Blog — Product Spec v0.3
+# geltech.dev Personal Site & Blog — Product Spec v0.4
 
-**Owner:** Wes · **Status:** Ready for Claude Code · **Last updated:** 2026-11-20
+**Owner:** Wes · **Status:** Ready for Claude Code · **Last updated:** 2026-11-21
 
 **Changelog**
+- v0.4: CV moved onto /about/ (employer names allowed only there); bio field; www redirect via dashboard rule; custom domain declared in wrangler.jsonc.
 - v0.3: All open questions resolved: the root is a placeholder (safe to replace), the repo is public, the design is minimal and text-first, and the byline is full name with a generic role (employer not named). Added a single site config file and design requirements.
 - v0.2: URL decision locked: personal site at the root, blog at `/blog`; apps stay on their own subdomains (e.g. `dishkept.geltech.dev`). DNS is already on Cloudflare.
 - v0.1: Initial draft.
@@ -56,7 +57,7 @@ Wes wants a personal site with a blog on his own domain, to build a professional
 - `https://geltech.dev/about/`: longer bio, focus areas, links (LinkedIn, GitHub, X)
 - `https://geltech.dev/projects/`: cards for apps and projects, linking out (Dishkept → `https://dishkept.geltech.dev`)
 - `https://geltech.dev/rss.xml`, `/sitemap-index.xml`, `/robots.txt`
-- `www.geltech.dev` → 301 to the bare domain; `*.workers.dev` must not be indexable (redirect or `noindex`)
+- `www.geltech.dev` → 301 to the bare domain; `*.workers.dev` must not be indexable (redirect or `noindex`). The `www` redirect is a Cloudflare Redirect Rule created in the dashboard; the apex is declared as a Custom Domain in `wrangler.jsonc`.
 
 ### 4.1 Domain guardrails (must-haves)
 - **G-1** The bare domain currently serves only a placeholder, so it can be replaced outright. Still export a snapshot of the DNS records before cutover.
@@ -73,11 +74,12 @@ Wes wants a personal site with a blog on his own domain, to build a professional
   export const site = {
     name: "<FULL NAME>",            // Wes to fill in; used as byline
     tagline: "<generic role>",       // e.g. "R&D leader · data platforms & engineering"
+    bio: "<2–3 generic sentences>",  // home and About; Wes to fill in
     url: "https://geltech.dev",
     links: { linkedin: "", github: "https://github.com/JHGelpi", x: "" },
   };
   ```
-- **FR-0a** **No employer name** anywhere on the site (bio, About, JSON-LD `worksFor`). Role descriptions stay generic.
+- **FR-0a** **No employer name** anywhere on the site (bio, About, JSON-LD `worksFor`), **except the CV section of `/about/`**, which may name current and past employers. `/about/`'s meta description, share card and JSON-LD stay generic. Role descriptions elsewhere stay generic.
 
 ### 5.1 Content authoring
 - **FR-1** Posts live in `src/content/blog/` as `.md` or `.mdx`, one file (or folder with co-located images) per post.
@@ -159,10 +161,10 @@ Wes wants a personal site with a blog on his own domain, to build a professional
 - [ ] `https://geltech.dev/blog/<slug>/` serves a published post over HTTPS; `www` and `workers.dev` don't create duplicate indexed content.
 - [ ] `https://dishkept.geltech.dev` works exactly as before cutover.
 - [ ] `/projects/` links to Dishkept; nav works on every page.
-- [ ] The byline, About page, and JSON-LD read from `site.config.ts`; no employer name appears anywhere.
+- [ ] The byline, About page, and JSON-LD read from `site.config.ts`; no employer name appears outside the CV section of `/about/`.
 - [ ] A post with `draft: true` is absent from the production site, RSS, and sitemap.
 - [ ] Invalid frontmatter fails the build with a clear error.
-- [ ] Pasting a post URL into LinkedIn Post Inspector shows the correct title, description, and image.
+- [ ] Pasting a post URL into LinkedIn Post Inspector shows the correct title, description, and image (deferred to the first real post).
 - [ ] Lighthouse mobile ≥ 95 in all four categories on the home page and a sample post.
 - [ ] No third-party requests on page load other than Cloudflare's own analytics beacon.
 
