@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import { site } from './src/site.config.ts';
 import { configProblems } from './src/lib/config-guard.ts';
 
@@ -12,6 +13,7 @@ export default defineConfig({
   site: site.url,
   output: 'static',
   trailingSlash: 'always',
+  integrations: [sitemap()],
   markdown: {
     shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },
   },
