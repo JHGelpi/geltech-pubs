@@ -10,10 +10,13 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "verify": "node scripts/verify-dist.ts dist",
     "test": "node --test \"src/**/*.test.ts\" \"scripts/**/*.test.ts\""
   },
   "dependencies": {
     "@astrojs/check": "0.9.12",
+    "@astrojs/rss": "4.0.19",
+    "@astrojs/sitemap": "3.7.6",
     "astro": "7.4.13",
     "typescript": "6.0.3"
   },
