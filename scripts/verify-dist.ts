@@ -2,6 +2,7 @@
 // Usage: node scripts/verify-dist.ts dist
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { mentions } from '../src/lib/config-guard.ts';
 
 /** Company names from CV role headings: `### Title · Company, City, ST · dates`. */
 export function employersFromCv(md: string): string[] {
@@ -30,7 +31,7 @@ export function verifyDist(files: Map<string, string>, employers: string[]): str
     const isAbout = path === 'about/index.html';
     const checked = isAbout ? (content.split('</head>')[0] ?? '') : content;
     for (const name of employers) {
-      if (checked.includes(name) || checked.includes(escapeHtml(name))) {
+      if (mentions(checked, name) || mentions(checked, escapeHtml(name))) {
         problems.push(`${path}: ${isAbout ? 'head ' : ''}names employer "${name}"`);
       }
     }

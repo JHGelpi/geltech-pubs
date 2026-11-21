@@ -14,14 +14,14 @@ Source for [geltech.dev](https://geltech.dev): my personal site and blog, writin
 | Site generator | [Astro](https://astro.build), static output |
 | Content | Markdown/MDX in Git, validated by content-collection schemas |
 | Hosting | Cloudflare Workers with Static Assets |
-| CI/CD | GitHub Actions → `wrangler deploy` (production on `main`, previews on PRs) |
-| Analytics | Cloudflare Web Analytics (cookieless) |
+| CI/CD | GitHub Actions → `wrangler deploy` on push to `main` (PR previews: Phase 2) |
+| Analytics | Cloudflare Web Analytics, cookieless (Phase 2) |
 
 No database, no server-side code, no third-party trackers. Pages ship with essentially zero JavaScript.
 
 ## Getting started
 
-Requires Node.js (LTS) and npm.
+Requires Node.js 24 (`.nvmrc`; run `nvm use`) and npm.
 
 ```bash
 npm install
@@ -29,7 +29,12 @@ npm run dev        # local preview at http://localhost:4321
 npm run build      # production build to dist/
 npm run preview    # serve the built site locally
 npm run check      # type and content checks (astro check)
+npm test           # unit tests (node:test)
+npm run verify     # after a build: fails if dist/ has client JS, a draft, or an employer name outside /about/
+npm run og         # regenerate public/og-default.png from site.config.ts
 ```
+
+CI deploys with `SITE_STRICT=1`, which fails the build while `site.config.ts` still has placeholders.
 
 ## Writing a post
 
@@ -49,7 +54,7 @@ pubDate: 2026-11-21
 updatedDate: 2026-11-22      # optional
 tags: [data-platforms, leadership]
 draft: true                  # drafts never reach production, RSS or the sitemap
-heroImage: ./hero.png        # optional; otherwise a share image is generated
+heroImage: /images/hero.png  # optional; otherwise the default share image is used
 canonicalUrl: ""             # optional; only for posts first published elsewhere
 ---
 ```
@@ -59,8 +64,8 @@ canonicalUrl: ""             # optional; only for posts first published elsewher
 ### Publishing
 
 1. Push the branch and open a pull request.
-2. CI runs checks (types, links, Lighthouse budget) and deploys a **preview URL**. Check the page and its share card there.
-3. Set `draft: false`, merge to `main`. CI deploys to production.
+2. Check the post locally with `npm run dev` (PR preview URLs and CI checks on PRs arrive in Phase 2).
+3. Set `draft: false`, merge to `main`. CI tests, builds and deploys to production.
 4. Share the link on LinkedIn and X.
 
 **Slugs are permanent.** Once a post is published, don't rename its file. If you must, add a redirect from the old URL.
@@ -69,28 +74,30 @@ canonicalUrl: ""             # optional; only for posts first published elsewher
 
 ```
 src/
-  site.config.ts        # name, tagline, social links: edit this first
+  site.config.ts        # name, tagline, bio, social links: edit this first
   content/
-    blog/               # posts (.md / .mdx, images alongside)
+    blog/               # posts (.md, images alongside)
     projects/           # one entry per app or project
-  pages/                # routes: /, /blog, /blog/[slug], /blog/tags/[tag], /about, /projects, 404
-  layouts/  components/ # BaseHead (meta, OG, JSON-LD), PostLayout, TOC, ...
-  styles/
-public/                 # static files copied as-is (favicon, robots.txt)
-scripts/new-post.*      # post scaffolding
+    pages/cv.md         # the CV shown on /about/ (the only place employers are named)
+  pages/                # routes: /, /blog, /blog/[slug], /about, /projects, rss.xml, 404
+  layouts/  components/ # BaseLayout, BaseHead (meta, OG, JSON-LD), Nav, lists
+  lib/                  # draft filter, config guard, JSON-LD
+  styles/global.css
+public/                 # copied as-is (robots.txt, _headers, og-default.png)
+scripts/                # new-post, verify-dist, og-default
 docs/SPEC.md            # product spec and acceptance criteria
+docs/launch-checklist.md # one-time manual steps (DNS, secrets, redirect)
 wrangler.jsonc          # Cloudflare Worker config (assets-only)
 .github/workflows/      # CI and deploy
 ```
 
-## Deployment setup (one-time)
+## Deployment
 
-1. **Cloudflare API token:** in the Cloudflare dashboard, create a token with permission to edit Workers on this account only. It should not have DNS edit rights.
-2. **GitHub secrets:** in *Settings → Secrets and variables → Actions*, add:
-   - `CLOUDFLARE_API_TOKEN`
-   - `CLOUDFLARE_ACCOUNT_ID`
-3. **Custom domain:** after the first deploy, attach `geltech.dev` (and `www.geltech.dev`, redirected to the apex) to the `geltech-site` Worker. Only the apex and `www` records change; **the `dishkept` record and every other subdomain must stay as they are.**
-4. Enable Cloudflare Web Analytics for the site.
+Deploys happen only from CI (`.github/workflows/deploy.yml`) on push to `main`. Never run `wrangler deploy` locally.
+
+`wrangler.jsonc` defines an assets-only Worker named `geltech-dev` with `geltech.dev` as its Custom Domain and no `workers.dev` route. `www` → apex is a Cloudflare Redirect Rule, not code. One-time setup (DNS snapshot, API token, secrets, redirect, smoke tests) is in [`docs/launch-checklist.md`](docs/launch-checklist.md).
+
+**Only the apex and `www` belong to this site.** The `dishkept` record and every other subdomain must stay as they are.
 
 ## License
 

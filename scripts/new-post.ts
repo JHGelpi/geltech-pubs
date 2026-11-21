@@ -13,9 +13,13 @@ export const slugify = (title: string): string =>
 export const frontmatter = (title: string, today: string): string =>
   ['---', `title: ${JSON.stringify(title)}`, 'description: ""', `pubDate: ${today}`, 'tags: []', 'draft: true', '---', '', ''].join('\n');
 
+// `npm run new-post "x" --private` (no `--`) makes npm eat the flag into npm_config_private.
+export const wantsPrivate = (args: string[], env: Record<string, string | undefined>): boolean =>
+  args.includes('--private') || env.npm_config_private === 'true';
+
 if (import.meta.main) {
   const args = process.argv.slice(2);
-  const isPrivate = args.includes('--private');
+  const isPrivate = wantsPrivate(args, process.env);
   const title = args.filter((a) => a !== '--private').join(' ').trim();
   const slug = slugify(title);
   if (!title || !slug) {

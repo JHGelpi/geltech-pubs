@@ -1,0 +1,11 @@
+// Assets-only Worker (no script). Deployed by CI only; never run `wrangler deploy` locally.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "geltech-dev",
+  "compatibility_date": "2026-11-21",
+  // No workers.dev route, so there's no duplicate copy to index.
+  "workers_dev": false,
+  // Only the apex. Never add other hostnames here (G-2); www is a dashboard Redirect Rule.
+  "routes": [{ "pattern": "geltech.dev", "custom_domain": true }],
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" }
+}

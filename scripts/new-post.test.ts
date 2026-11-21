@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { slugify, frontmatter } from './new-post.ts';
+import { slugify, frontmatter, wantsPrivate } from './new-post.ts';
 
 test('slugify', () => {
   assert.equal(slugify('Hello, World!'), 'hello-world');
@@ -13,4 +13,10 @@ test('frontmatter quotes the title and starts as draft', () => {
   assert.match(fm, /^title: "Say \\"hi\\""$/m);
   assert.match(fm, /^draft: true$/m);
   assert.match(fm, /^pubDate: 2026-11-21$/m);
+});
+
+test('--private is honoured even when npm swallows the flag', () => {
+  assert.equal(wantsPrivate(['--private'], {}), true);
+  assert.equal(wantsPrivate([], { npm_config_private: 'true' }), true);
+  assert.equal(wantsPrivate([], {}), false);
 });

@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "og": "node scripts/og-default.ts",
     "new-post": "node scripts/new-post.ts",
     "verify": "node scripts/verify-dist.ts dist",
     "test": "node --test \"src/**/*.test.ts\" \"scripts/**/*.test.ts\""
@@ -22,6 +23,7 @@
     "typescript": "6.0.3"
   },
   "devDependencies": {
-    "@types/node": "24.19.2"
+    "@types/node": "24.19.2",
+    "wrangler": "4.166.0"
   }
 }
