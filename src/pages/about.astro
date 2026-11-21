@@ -1,0 +1,34 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import headshot from '../assets/headshot.png';
+import { site } from '../site.config';
+import { personJsonLd } from '../lib/person';
+
+const cv = await getEntry('pages', 'cv');
+if (!cv) throw new Error('src/content/pages/cv.md is missing');
+const { Content } = await render(cv);
+const labels: Record<string, string> = { linkedin: 'LinkedIn', github: 'GitHub', x: 'X' };
+const links = Object.entries(site.links).filter(([, url]) => url);
+---
+
+<!-- Employer names are allowed only inside the CV section below (FR-0a); keep head and intro generic. -->
+<BaseLayout title="About" description={site.tagline} jsonLd={personJsonLd()}>
+  <div class="intro">
+    <Image src={headshot} alt={`Portrait of ${site.name}`} width={160} height={160} class="headshot" loading="eager" />
+    <div>
+      <h1>{site.name}</h1>
+      <p class="muted">{site.tagline}</p>
+    </div>
+  </div>
+  <p>{site.bio}</p>
+  <ul class="inline-list">
+    {links.map(([key, url]) => <li><a href={url} rel="me">{labels[key] ?? key}</a></li>)}
+  </ul>
+
+  <section aria-labelledby="cv" class="cv">
+    <h2 id="cv" class="visually-hidden">Curriculum vitae</h2>
+    <Content />
+  </section>
+</BaseLayout>

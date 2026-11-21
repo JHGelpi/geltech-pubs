@@ -99,3 +99,10 @@ th, td { border: 1px solid var(--border); padding: var(--s1) var(--s2); text-ali
     background-color: var(--shiki-dark-bg) !important;
   }
 }
+
+.intro { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); margin-bottom: var(--s3); }
+.intro h1 { margin: 0; }
+.intro p { margin: 0; }
+.headshot { border-radius: 50%; }
+.inline-list { display: flex; flex-wrap: wrap; gap: var(--s3); list-style: none; padding: 0; }
+.cv h3 { font-size: 1.05rem; }
