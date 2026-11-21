@@ -1,9 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import ProjectList from '../components/ProjectList.astro';
 import { site } from '../site.config';
+import { getPublishedPosts, getProjects } from '../lib/content';
+import { personJsonLd } from '../lib/person';
+
+const posts = (await getPublishedPosts()).slice(0, 5);
+const projects = (await getProjects()).slice(0, 3);
 ---
 
-<BaseLayout title={site.name} description={site.tagline}>
+<BaseLayout title={site.name} description={site.tagline} jsonLd={personJsonLd()}>
   <h1>{site.name}</h1>
   <p>{site.bio}</p>
+
+  <h2>Latest posts</h2>
+  <PostList posts={posts} />
+  <p><a href="/blog/">All posts</a></p>
+
+  <h2>Projects</h2>
+  <ProjectList projects={projects} heading="h3" />
 </BaseLayout>

@@ -1,0 +1,48 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { site } from '../../site.config';
+import { getPublishedPosts } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts(); // newest first
+  return posts.map((post, i) => ({
+    params: { slug: post.id },
+    props: { post, newer: posts[i - 1], older: posts[i + 1] },
+  }));
+}
+
+const { post, newer, older } = Astro.props;
+const { Content } = await render(post);
+const { title, description, pubDate, updatedDate, tags, heroImage, canonicalUrl } = post.data;
+const url = new URL(`/blog/${post.id}/`, site.url).href;
+const enc = encodeURIComponent;
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+---
+
+<BaseLayout title={title} description={description} type="article" canonical={canonicalUrl} image={heroImage}>
+  <article>
+    <header>
+      <h1>{title}</h1>
+      <p class="muted">
+        <time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time>
+        {updatedDate && <> · Updated <time datetime={updatedDate.toISOString()}>{fmt(updatedDate)}</time></>}
+        {tags.length > 0 && <> · {tags.join(', ')}</>}
+      </p>
+    </header>
+    <Content />
+  </article>
+
+  <p class="share">
+    Share:
+    <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${enc(url)}`} rel="noopener">LinkedIn</a> ·
+    <a href={`https://x.com/intent/post?url=${enc(url)}&text=${enc(title)}`} rel="noopener">X</a>
+  </p>
+
+  {(older || newer) && (
+    <nav aria-label="More posts" class="post-nav">
+      {older && <p>Older: <a href={`/blog/${older.id}/`}>{older.data.title}</a></p>}
+      {newer && <p>Newer: <a href={`/blog/${newer.id}/`}>{newer.data.title}</a></p>}
+    </nav>
+  )}
+</BaseLayout>
