@@ -7,6 +7,6 @@ export const site = {
   links: {
     linkedin: "https://www.linkedin.com/in/wgelpi",
     github: "https://github.com/JHGelpi",
-    x: "",
+    x: "https://x.com/wes_gelpi",
   } as Record<string, string>,
 };
