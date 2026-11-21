@@ -10,6 +10,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
+    "new-post": "node scripts/new-post.ts",
     "verify": "node scripts/verify-dist.ts dist",
     "test": "node --test \"src/**/*.test.ts\" \"scripts/**/*.test.ts\""
   },
