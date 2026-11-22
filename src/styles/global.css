@@ -255,6 +255,27 @@ a.stretched::after { content: ""; position: absolute; inset: 0; border-radius: v
 .project-title { font-size: 1.1rem; margin: 0 0 var(--s2); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
 .project-card .actions { margin-top: auto; padding-top: var(--s2); }
 
+/* Post page: one reading card, ~70ch of text. */
+.post { max-width: calc(70ch + 2 * var(--s4)); margin-inline: auto; padding: var(--s4); }
+@media (max-width: 640px) { .post { padding: 1.25rem var(--s3); } }
+.post-header { margin-bottom: var(--s4); }
+.post-header h1 { margin: 0 0 var(--s2); }
+.post-header p { margin: 0; }
+.prose > :first-child { margin-top: 0; }
+.prose blockquote { margin: var(--s3) 0; padding: var(--s1) var(--s3); border-left: 3px solid var(--accent); color: var(--muted); }
+.prose li + li { margin-top: var(--s1); }
+.prose hr { border: 0; border-top: 1px solid var(--border); margin: var(--s4) 0; }
+.share { margin-top: var(--s4); padding-top: var(--s3); border-top: 1px solid var(--border); }
+.pill-btn { border-radius: 999px; padding: 0.35rem 0.9rem; font-size: 0.9rem; }
+.post-nav {
+  max-width: calc(70ch + 2 * var(--s4)); margin: var(--s3) auto 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3);
+}
+.post-nav p { margin: 0 0 var(--s1); font-size: 0.85rem; }
+.post-nav a { font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+.post-nav .newer { grid-column: 2; text-align: right; }
+@media (max-width: 640px) { .post-nav { grid-template-columns: 1fr; } .post-nav .newer { grid-column: auto; text-align: left; } }
+
 .skip-link { position: absolute; left: -9999px; }
 .skip-link:focus { left: var(--s3); top: var(--s3); background: var(--surface); padding: var(--s2); z-index: 20; }
 
