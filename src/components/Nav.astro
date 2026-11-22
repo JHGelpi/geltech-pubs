@@ -9,10 +9,10 @@ const path = Astro.url.pathname;
 const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
 ---
 
-<nav aria-label="Main">
-  <ul>
+<nav class="site-nav" aria-label="Main">
+  <ul class="pill-group">
     {items.map((i) => (
-      <li><a href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.label}</a></li>
+      <li><a class="pill" href={i.href} aria-current={isCurrent(i.href) ? 'page' : undefined}>{i.label}</a></li>
     ))}
   </ul>
 </nav>

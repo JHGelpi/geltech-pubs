@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { readingMinutes } from '../lib/posts';
+
+export interface Props {
+  post: CollectionEntry<'blog'>;
+  headingLevel?: 'h2' | 'h3';
+}
+const { post, headingLevel: H = 'h3' } = Astro.props;
+const { title, description, pubDate, tags } = post.data;
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+---
+
+<article class="card post-card">
+  {tags.length > 0 && (
+    <ul class="chips">{tags.slice(0, 2).map((t) => <li class="chip">{t}</li>)}</ul>
+  )}
+  <H class="post-card-title"><a class="stretched" href={`/blog/${post.id}/`}>{title}</a></H>
+  {description && <p class="post-card-desc">{description}</p>}
+  <p class="muted post-card-meta">
+    <time datetime={pubDate.toISOString()}>{fmt(pubDate)}</time> · {readingMinutes(post.body ?? '')} min read
+  </p>
+</article>

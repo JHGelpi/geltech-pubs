@@ -22,11 +22,12 @@ const links = Object.entries(site.links).filter(([, url]) => url);
 
 <!-- Employer names are allowed only inside the CV section below (FR-0a); keep head and intro generic. -->
 <BaseLayout title="About" description={site.tagline} jsonLd={personJsonLd()}>
-  <div class="intro">
-    <Image src={headshot} alt={`Portrait of ${site.name}`} width={160} height={160} class="headshot" loading="eager" />
-    <div>
+<div class="narrow">
+  <section class="card hero">
+    <Image src={headshot} alt={`Portrait of ${site.name}`} width={120} height={120} class="headshot" loading="eager" />
+    <div class="hero-text">
       <h1>{site.name}</h1>
-      <p class="muted">{site.tagline}</p>
+      <p class="muted hero-tagline">{site.tagline}</p>
       <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
       <ul class="social-links">
         {links.map(([key, url]) => (
@@ -38,13 +39,14 @@ const links = Object.entries(site.links).filter(([, url]) => url);
         ))}
       </ul>
     </div>
-  </div>
-  <p>{site.bio}</p>
+  </section>
+  <div class="card bio"><p>{site.bio}</p></div>
 
   <section aria-labelledby="cv" class="cv">
     <h2 id="cv" class="visually-hidden">Curriculum vitae</h2>
     <Content />
   </section>
+</div>
 
   <a href="#" class="return-to-top" aria-label="Return to top">↑</a>
 </BaseLayout>
@@ -95,6 +97,8 @@ const links = Object.entries(site.links).filter(([, url]) => url);
     // Open the tab holding a linked anchor (e.g. /about/#philanthropy).
     const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
     select(Math.max(0, panels.findIndex((p) => target && p.contains(target))));
+    // Hiding the other panels moves the page, so re-scroll to the target (clear of the sticky bar via scroll-padding-top).
+    if (target) target.scrollIntoView();
   }
 
   const toTop = document.querySelector('.return-to-top');

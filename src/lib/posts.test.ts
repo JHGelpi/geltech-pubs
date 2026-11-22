@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { isPublished, byNewest, frontmatterIssues } from './posts.ts';
+import { isPublished, byNewest, frontmatterIssues, readingMinutes } from './posts.ts';
 
 test('drafts hidden in prod, shown in dev', () => {
   assert.equal(isPublished({ draft: true }, true), false);
@@ -26,4 +26,11 @@ test('dates more than a day in the future are rejected (catches 2026-13-45 rollo
   const issues = frontmatterIssues({ draft: true, description: 'x', pubDate: new Date('2027-02-14'), updatedDate: new Date('2027-01-01') }, now);
   assert.deepEqual(issues.map((i) => i.path), ['pubDate', 'updatedDate']);
   assert.deepEqual(frontmatterIssues({ draft: false, description: 'x', pubDate: new Date('2026-11-22') }, now), []);
+});
+
+test('reading time is words / 225, rounded up, at least 1', () => {
+  assert.equal(readingMinutes(''), 1);
+  assert.equal(readingMinutes('word '.repeat(225)), 1);
+  assert.equal(readingMinutes('word '.repeat(226)), 2);
+  assert.equal(readingMinutes('a\n\nb\tc   d'), 1);
 });

@@ -5,9 +5,13 @@ import { site } from '../site.config';
 import { getProjects } from '../lib/content';
 
 const projects = await getProjects();
+const description = `Apps and projects built by ${site.name}.`;
 ---
 
-<BaseLayout title="Projects" description={`Apps and projects built by ${site.name}.`}>
-  <h1>Projects</h1>
+<BaseLayout title="Projects" description={description}>
+  <header class="page-header">
+    <h1>Projects</h1>
+    <p class="muted">{description}</p>
+  </header>
   <ProjectList projects={projects} />
 </BaseLayout>

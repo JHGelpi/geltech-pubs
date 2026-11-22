@@ -80,8 +80,9 @@ src/
     projects/           # one entry per app or project
     pages/cv.md         # the CV shown on /about/ (the only place employers are named)
   pages/                # routes: /, /blog, /blog/[slug], /about, /projects, rss.xml, 404
-  layouts/  components/ # BaseLayout, BaseHead (meta, OG, JSON-LD), Nav, lists
-  lib/                  # draft filter, config guard, JSON-LD
+  layouts/  components/ # BaseLayout, BaseHead (meta, OG, JSON-LD), Nav, theme switch, post and project cards
+  lib/                  # draft filter, reading time, config guard, JSON-LD
+  scripts/theme-init.js # the light/dark switch, inlined into every page's <head>
   styles/global.css
 public/                 # copied as-is (robots.txt, _headers, og-default.png)
 scripts/                # new-post, verify-dist, og-default

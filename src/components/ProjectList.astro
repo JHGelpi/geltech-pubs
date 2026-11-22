@@ -6,19 +6,22 @@ export interface Props {
   heading?: 'h2' | 'h3';
 }
 const { projects, heading: H = 'h2' } = Astro.props;
+const label = { live: 'Live', beta: 'Beta', archived: 'Archived' } as const;
 ---
 
 {projects.length === 0 ? (
-  <p class="muted">Projects coming soon.</p>
+  <div class="card empty-state"><p class="muted">Projects coming soon.</p></div>
 ) : (
-  projects.map((p) => (
-    <article class="project">
-      <H><a href={p.data.url}>{p.data.name}</a></H>
-      <p>{p.data.summary}</p>
-      <p class="muted">
-        Status: {p.data.status}
-        {p.data.repo && <> · <a href={p.data.repo}>Source</a></>}
-      </p>
-    </article>
-  ))
+  <div class="card-grid">
+    {projects.map((p) => (
+      <article class="card project-card">
+        <H class="project-title">{p.data.name} <span class={`badge badge-${p.data.status}`}>{label[p.data.status]}</span></H>
+        <p>{p.data.summary}</p>
+        <p class="actions">
+          <a class="btn btn-secondary" href={p.data.url} aria-label={`Open ${p.data.name}`}>Open ↗</a>
+          {p.data.repo && <a href={p.data.repo}>Source</a>}
+        </p>
+      </article>
+    ))}
+  </div>
 )}

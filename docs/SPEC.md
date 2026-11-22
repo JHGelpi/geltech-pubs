@@ -1,8 +1,9 @@
-# geltech.dev Personal Site & Blog — Product Spec v0.5
+# geltech.dev Personal Site & Blog — Product Spec v0.6
 
 **Owner:** Wes · **Status:** Ready for Claude Code · **Last updated:** 2026-11-21
 
 **Changelog**
+- v0.6: Card-based design replaces "minimal, text-first" (§5.5 rewritten); light/dark switch (FR-8) and reading time shipped, moved out of Phase 2.
 - v0.5: /about/ mirrors the CV site (jhgelpi.github.io/cv): same sections, CV sections as tabs (approved client JS, /about/ only), email address and Bluesky link shown; phone and city stay off the site.
 - v0.4: CV moved onto /about/ (employer names allowed only there); bio field; www redirect via dashboard rule; custom domain declared in wrangler.jsonc.
 - v0.3: All open questions resolved: the root is a placeholder (safe to replace), the repo is public, the design is minimal and text-first, and the byline is full name with a generic role (employer not named). Added a single site config file and design requirements.
@@ -46,7 +47,7 @@ Wes wants a personal site with a blog on his own domain, to build a professional
 | Domain layout | **Root = personal site + `/blog`. Subdomains = apps** (`dishkept.geltech.dev`, future apps) | One identity for the profile; each app stays independent. |
 | Repo | **Public** GitHub repo | Doubles as a portfolio piece. Note: drafts committed to the repo are publicly readable (see FR-3a). |
 | CI/CD | GitHub Actions → `wrangler deploy`; preview deploys on PRs | Drafts can be reviewed at a preview URL before merging. |
-| Styling | **Minimal, text-first**; plain CSS (no framework), system font stack or one self-hosted variable font | Readability first, smallest payload, least maintenance. See §5.5. |
+| Styling | **Card-based, app-like**; plain CSS (no framework), system font stack | Polished look with the smallest payload and least maintenance. See §5.5. |
 | Analytics | Cloudflare Web Analytics (cookieless) | Privacy-friendly, free, no consent banner needed. |
 
 ## 4. URL structure
@@ -126,12 +127,14 @@ Wes wants a personal site with a blog on his own domain, to build a professional
 - **FR-22** The repo includes a README (what it is, how to write and publish a post) and a license (MIT for code; content © the author, stated separately).
 - **FR-23** No secrets in the repo; the Cloudflare API token lives in GitHub Actions secrets, scoped to deploy this Worker only.
 
-### 5.5 Design (minimal, text-first)
-- **D-1** Single readable column (~65–75 characters wide), generous line height, clear heading hierarchy.
-- **D-2** Neutral palette with one accent color for links; both themes meet AA contrast.
-- **D-3** No hero images on the home page; lead with a 2–3 sentence bio, then the latest posts as a simple dated list.
-- **D-4** Project cards are text-led (name, one line, link); screenshots optional.
-- **D-5** Reference points for tone: Simon Willison's and Julia Evans's blogs. Content over chrome.
+### 5.5 Design (card-based)
+Light grey page, white rounded cards, one accent colour, a sticky top bar with pill navigation and a light/dark switch. Dark theme is the same layout with dark cards. Details: `docs/superpowers/specs/2026-11-21-modern-ui-design.md`.
+- **D-1** Post text stays in one readable column (~65–75 characters wide) on a single card; grids are only for lists of posts and projects.
+- **D-2** Neutral palette with one accent colour; every text and UI colour pair meets WCAG AA in both themes.
+- **D-3** Home leads with a hero card holding the bio, then the latest posts as cards (empty state when there are none).
+- **D-4** Project cards are text-led (name, status, one line, link); screenshots optional.
+- **D-5** Content first on post pages: no sidebars or widgets around the article.
+- **D-6** The theme follows the device setting until the reader picks one with the switch; the choice is remembered on that device. No flash of the wrong theme; the switch is hidden when JS is off.
 
 ## 6. Publishing workflow (target)
 
@@ -148,7 +151,7 @@ Wes wants a personal site with a blog on his own domain, to build a professional
 - OG/Twitter meta tags with a default share image; README and license.
 
 **Phase 2: Polish**
-- Per-post generated OG images, JSON-LD, tags pages, table of contents, reading time, dark mode toggle.
+- Per-post generated OG images, JSON-LD, tags pages, table of contents. (Reading time and the dark mode toggle shipped in v0.6.)
 - CI checks (astro check, links, Lighthouse budget), PR previews, security headers.
 - Cloudflare Web Analytics.
 
