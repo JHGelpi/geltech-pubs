@@ -288,29 +288,45 @@ a.stretched::after { content: ""; position: absolute; inset: 0; border-radius: v
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
 
-.intro { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); margin-bottom: var(--s3); }
-.intro h1 { margin: 0; }
-.intro p { margin: 0; }
-.headshot { border-radius: 50%; }
+/* About */
+.narrow { max-width: 860px; margin-inline: auto; }
+.bio { margin-top: var(--s3); }
+.bio p { margin: 0; }
 .cv h3 { font-size: 1.05rem; }
 .cv h4 { color: var(--muted); margin-top: var(--s4); }
-
-/* About: CV header links, skill chips, tabs, return-to-top. */
 .social-links { display: flex; flex-wrap: wrap; gap: var(--s2); list-style: none; padding: 0; margin: var(--s2) 0 0; }
-.social-links a { display: inline-flex; padding: var(--s1); color: var(--muted); }
+.social-links a { display: inline-flex; padding: var(--s1); color: var(--muted); border-radius: var(--r-btn); }
 .social-links a:hover { color: var(--accent); }
+.hero-text > p { margin-block: 0 var(--s1); }
 .skills ul { display: flex; flex-wrap: wrap; gap: var(--s2); list-style: none; padding: 0; }
-.skills li { padding: var(--s1) var(--s3); border: 1px solid var(--border); border-radius: 999px; background: var(--code-bg); font-size: 0.9rem; }
-.tabs { display: flex; flex-wrap: wrap; margin-block: var(--s4) var(--s3); border-bottom: 1px solid var(--border); }
+.skills li { padding: 0.15rem 0.7rem; border-radius: 999px; background: var(--chip-bg); color: var(--chip-fg); font-size: 0.875rem; }
+/* Each CV section is a card; with JS only the selected one shows. */
+.cv .tab-panel {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-card);
+  box-shadow: var(--shadow); padding: 1.25rem 1.5rem; margin-top: var(--s3);
+}
+.cv .tab-panel > h2:first-child { margin-top: 0; }
+@media (max-width: 640px) { .cv .tab-panel { padding: 1.25rem var(--s3); } }
+.tabs {
+  display: flex; flex-wrap: wrap; gap: 2px; margin-top: var(--s4); padding: 3px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 999px; width: fit-content; max-width: 100%;
+}
+@media (max-width: 640px) { .tabs { border-radius: var(--r-card); width: auto; } }
 .tabs [role="tab"] {
-  padding: var(--s2) var(--s3); border: 0; border-bottom: 3px solid transparent; background: none;
-  color: var(--muted); font: inherit; font-size: 0.95rem; cursor: pointer;
+  padding: 0.3rem 0.85rem; border: 0; border-radius: 999px; background: none;
+  color: var(--muted); font: inherit; font-size: 0.9rem; cursor: pointer;
 }
 .tabs [role="tab"]:hover { color: var(--fg); }
-.tabs [role="tab"][aria-selected="true"] { border-bottom-color: var(--accent); color: var(--accent); font-weight: 600; }
+.tabs [role="tab"][aria-selected="true"] { background: var(--surface); color: var(--fg); font-weight: 600; box-shadow: var(--shadow), inset 0 0 0 1px var(--border); }
+.tabs [role="tab"]:focus-visible { border-radius: 999px; }
 .return-to-top {
   position: fixed; right: var(--s3); bottom: var(--s3); display: grid; place-items: center;
-  width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--accent); color: var(--bg);
+  width: 2.75rem; height: 2.75rem; border-radius: 50%; background: var(--surface); color: var(--fg);
+  border: 1px solid var(--border); box-shadow: var(--shadow-lift);
   font-size: 1.25rem; text-decoration: none; visibility: hidden; opacity: 0; transition: opacity 0.2s, visibility 0.2s;
 }
 .return-to-top.visible { visibility: visible; opacity: 1; }
+
+/* 404 */
+.not-found { max-width: 480px; margin: var(--s4) auto; text-align: center; padding: var(--s4) var(--s3); }
+.not-found .actions { justify-content: center; }
