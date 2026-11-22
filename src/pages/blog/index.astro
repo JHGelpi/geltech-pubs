@@ -5,9 +5,13 @@ import { site } from '../../site.config';
 import { getPublishedPosts } from '../../lib/content';
 
 const posts = await getPublishedPosts();
+const description = `Writing by ${site.name} on data engineering and data platform leadership.`;
 ---
 
-<BaseLayout title="Blog" description={`Writing by ${site.name} on data engineering and data platform leadership.`}>
-  <h1>Blog</h1>
-  <PostList posts={posts} />
+<BaseLayout title="Blog" description={description}>
+  <header class="page-header">
+    <h1>Blog</h1>
+    <p class="muted">{description}</p>
+  </header>
+  <PostList posts={posts} headingLevel="h2" />
 </BaseLayout>

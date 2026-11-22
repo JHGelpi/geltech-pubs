@@ -1,23 +1,35 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostList from '../components/PostList.astro';
 import ProjectList from '../components/ProjectList.astro';
+import headshot from '../assets/headshot.png';
 import { site } from '../site.config';
 import { getPublishedPosts, getProjects } from '../lib/content';
 import { personJsonLd } from '../lib/person';
 
-const posts = (await getPublishedPosts()).slice(0, 5);
+const posts = (await getPublishedPosts()).slice(0, 4);
 const projects = (await getProjects()).slice(0, 3);
 ---
 
 <BaseLayout title={site.name} description={site.tagline} jsonLd={personJsonLd()}>
-  <h1>{site.name}</h1>
-  <p>{site.bio}</p>
+  <section class="card hero">
+    <Image src={headshot} alt={site.name} width={96} height={96} class="headshot" loading="eager" />
+    <div class="hero-text">
+      <h1>{site.name}</h1>
+      <p class="muted hero-tagline">{site.tagline}</p>
+      <p>{site.bio}</p>
+      <p class="actions">
+        <a class="btn btn-primary" href="/blog/">Read the blog</a>
+        <a class="btn btn-secondary" href="/about/">About me</a>
+      </p>
+    </div>
+  </section>
 
-  <h2>Latest posts</h2>
-  <PostList posts={posts} />
-  <p><a href="/blog/">All posts</a></p>
+  <h2 class="section-label">Latest writing</h2>
+  <PostList posts={posts} headingLevel="h3" />
+  {posts.length > 0 && <p class="more"><a href="/blog/">All posts →</a></p>}
 
-  <h2>Projects</h2>
+  <h2 class="section-label">Projects</h2>
   <ProjectList projects={projects} heading="h3" />
 </BaseLayout>

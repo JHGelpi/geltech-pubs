@@ -221,6 +221,35 @@ a.stretched::after { content: ""; position: absolute; inset: 0; border-radius: v
 .badge-beta { background: var(--badge-beta-bg); color: var(--badge-beta-fg); }
 .badge-archived { background: var(--badge-archived-bg); color: var(--badge-archived-fg); }
 
+/* Home hero */
+.hero {
+  display: flex; gap: 1.25rem; align-items: flex-start; padding: 1.5rem;
+  background: linear-gradient(135deg, var(--hero-from), var(--hero-to)), var(--surface);
+}
+.hero .headshot { border-radius: 50%; flex: none; }
+.hero h1 { margin: 0; }
+.hero-tagline { margin: var(--s1) 0 var(--s2); }
+.hero .actions { margin-top: var(--s3); }
+@media (max-width: 640px) { .hero { flex-direction: column; padding: 1.25rem; } }
+
+.page-header { margin-bottom: var(--s4); }
+.page-header h1 { margin-bottom: var(--s1); }
+.page-header p { margin: 0; }
+.more { margin-top: var(--s3); }
+
+/* Post card */
+.post-card { display: flex; flex-direction: column; }
+.post-card-title { font-size: 1.1rem; margin: 0 0 var(--s2); overflow-wrap: anywhere; }
+.post-card-title a { color: var(--fg); text-decoration: none; }
+.post-card-title a:hover { color: var(--accent); }
+.post-card-desc {
+  margin: 0 0 var(--s2); color: var(--muted);
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden;
+}
+.post-card-meta { margin: auto 0 0; font-size: 0.9rem; }
+.empty-state { text-align: center; padding: var(--s4) var(--s3); }
+.empty-title { font-weight: 600; font-size: 1.1rem; margin: 0 0 var(--s1); }
+
 .skip-link { position: absolute; left: -9999px; }
 .skip-link:focus { left: var(--s3); top: var(--s3); background: var(--surface); padding: var(--s2); z-index: 20; }
 

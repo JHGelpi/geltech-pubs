@@ -1,23 +1,21 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import PostCard from './PostCard.astro';
 
 export interface Props {
   posts: CollectionEntry<'blog'>[];
-  empty?: string;
+  headingLevel?: 'h2' | 'h3';
 }
-const { posts, empty = 'No posts yet.' } = Astro.props;
-const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+const { posts, headingLevel = 'h3' } = Astro.props;
 ---
 
 {posts.length === 0 ? (
-  <p class="muted">{empty}</p>
+  <div class="card empty-state">
+    <p class="empty-title">First post coming soon</p>
+    <p class="muted">Follow the <a href="/rss.xml">RSS feed</a> to hear when it's up.</p>
+  </div>
 ) : (
-  <ul class="post-list">
-    {posts.map((p) => (
-      <li>
-        <time datetime={p.data.pubDate.toISOString()}>{fmt(p.data.pubDate)}</time>
-        <a href={`/blog/${p.id}/`}>{p.data.title}</a>
-      </li>
-    ))}
-  </ul>
+  <div class="card-grid">
+    {posts.map((post) => <PostCard post={post} headingLevel={headingLevel} />)}
+  </div>
 )}
