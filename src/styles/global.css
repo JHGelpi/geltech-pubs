@@ -250,6 +250,11 @@ a.stretched::after { content: ""; position: absolute; inset: 0; border-radius: v
 .empty-state { text-align: center; padding: var(--s4) var(--s3); }
 .empty-title { font-weight: 600; font-size: 1.1rem; margin: 0 0 var(--s1); }
 
+/* Project card */
+.project-card { display: flex; flex-direction: column; }
+.project-title { font-size: 1.1rem; margin: 0 0 var(--s2); display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); }
+.project-card .actions { margin-top: auto; padding-top: var(--s2); }
+
 .skip-link { position: absolute; left: -9999px; }
 .skip-link:focus { left: var(--s3); top: var(--s3); background: var(--surface); padding: var(--s2); z-index: 20; }
 
