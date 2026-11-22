@@ -25,3 +25,7 @@ export function frontmatterIssues(
   }
   return issues;
 }
+
+/** Minutes to read at 225 words a minute, rounded up, never 0. */
+export const readingMinutes = (text: string): number =>
+  Math.max(1, Math.ceil(text.split(/\s+/).filter(Boolean).length / 225));
