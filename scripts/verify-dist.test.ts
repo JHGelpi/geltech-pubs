@@ -43,3 +43,11 @@ test('employer match is case-insensitive on word boundaries', () => {
   assert.equal(verifyDist(new Map([['blog/a/index.html', 'I worked at RED HAT.']]), ['Red Hat']).length, 1);
   assert.equal(verifyDist(new Map([['blog/a/index.html', 'Reddit hats']]), ['Red Hat']).length, 0);
 });
+
+test('the theme-init script is allowed on every page; other scripts are not', () => {
+  const ok = verifyDist(new Map([['blog/a/index.html', '<head><script id="theme-init">x</script></head>']]), []);
+  assert.deepEqual(ok, []);
+  const bad = verifyDist(new Map([['blog/a/index.html', '<script id="theme-init"></script><script src="t.js"></script>']]), []);
+  assert.equal(bad.length, 1);
+  assert.match(bad[0]!, /t\.js/);
+});
