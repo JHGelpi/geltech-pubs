@@ -19,12 +19,14 @@ const { Content, headings } = await render(post);
 const toc = tocHeadings(headings);
 const { title, description, pubDate, updatedDate, tags, heroImage, canonicalUrl } = post.data;
 const url = new URL(`/blog/${post.id}/`, site.url).href;
-const jsonLd = blogPostingJsonLd({ ...post.data, url });
+// A hero image wins; otherwise the generated card from src/pages/og/blog/[slug].png.ts.
+const image = heroImage ?? `/og/blog/${post.id}.png`;
+const jsonLd = blogPostingJsonLd({ ...post.data, image, url });
 const enc = encodeURIComponent;
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
 
-<BaseLayout title={title} description={description} type="article" canonical={canonicalUrl} image={heroImage} jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} type="article" canonical={canonicalUrl} image={image} jsonLd={jsonLd}>
   <article class="card post">
     <header class="post-header">
       {tags.length > 0 && <ul class="chips" aria-label="Tags">{tags.map((t) => <li><a class="chip" href={`/blog/tags/${slugify(t)}/`}>{t}</a></li>)}</ul>}
