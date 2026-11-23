@@ -60,3 +60,4 @@ jobs:
         with:
           name: lighthouse
           path: .lighthouseci/
+          include-hidden-files: true
