@@ -11,3 +11,4 @@ Claude doesn't do these: they touch DNS, Cloudflare settings or secrets. Work to
 - [ ] **7. Dishkept smoke test (G-5).** Open `https://dishkept.geltech.dev` and use it as normal.
 - [ ] **8. Retire the old CV site.** Turn off GitHub Pages on `JHGelpi/cv`, or replace its `index.html` with a link to `https://geltech.dev/about/`.
 - [ ] **9. First real post (§8).** After it's live: paste its URL into LinkedIn Post Inspector and check the X card. Title, description and image should be right.
+- [ ] **10. Security headers (FR-20).** After the deploy that adds them: `curl -sI https://geltech.dev/ | grep -iE 'content-security|strict-transport|x-content|referrer|permissions'` shows all five, and HSTS has no `includeSubDomains`. Open `/` and `/about/` with DevTools → Console: no CSP errors, the light/dark switch works, the CV tabs work.
