@@ -34,7 +34,13 @@ const projects = defineCollection({
 
 const pages = defineCollection({
   loader: glob({ base: './src/content/pages', pattern: '**/*.md' }),
-  schema: z.object({ title: z.string() }),
+  // cv is rendered inside /about/; every other page gets its own route (src/pages/[page].astro).
+  schema: z.object({
+    title: z.string(),
+    description: z.string().max(160).optional(),
+    updated: z.coerce.date().optional(),
+    draft: z.boolean().default(false),
+  }),
 });
 
 export const collections = { blog, projects, pages };

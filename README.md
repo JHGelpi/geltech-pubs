@@ -79,7 +79,8 @@ src/
     blog/               # posts (.md, images alongside)
     projects/           # one entry per app or project
     pages/cv.md         # the CV shown on /about/ (the only place employers are named)
-  pages/                # routes: /, /blog, /blog/[slug], /blog/tags/[tag], /og/blog/[slug].png (share cards), /about, /projects, rss.xml, 404
+    pages/now.md        # /now/ (draft: true until you write it; then it gets a footer link)
+  pages/                # routes: /, /blog, /blog/[slug], /blog/tags/[tag], /og/blog/[slug].png (share cards), /[page] (e.g. /now/), /about, /projects, rss.xml, 404
   layouts/  components/ # BaseLayout, BaseHead (meta, OG, JSON-LD), Nav, theme switch, post and project cards
   lib/                  # draft filter, reading time, config guard, JSON-LD, share-card SVG
   scripts/theme-init.js # the light/dark switch, inlined at the top of every page's <body>
