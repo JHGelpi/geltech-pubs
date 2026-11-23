@@ -23,6 +23,6 @@ export default defineConfig({
     { name: 'csp-header', hooks: { 'astro:build:done': ({ dir }) => writeCspHeader(fileURLToPath(dir)) } },
   ],
   markdown: {
-    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark-default' } },
+    shikiConfig: { themes: { light: 'github-light-default', dark: 'github-dark-default' } },
   },
 });
