@@ -1,8 +1,9 @@
-# geltech.dev Personal Site & Blog — Product Spec v0.8
+# geltech.dev Personal Site & Blog — Product Spec v0.9
 
-**Owner:** Wes · **Status:** Ready for Claude Code · **Last updated:** 2026-11-21
+**Owner:** Wes · **Status:** Ready for Claude Code · **Last updated:** 2026-11-23
 
 **Changelog**
+- v0.9: FR-0a dropped: employers may be named anywhere, including posts. The build no longer checks for employer names.
 - v0.8: D-6 changed: a manual light/dark choice lasts for the browser session (session cookie, shared by every page and tab), not forever.
 - v0.7: Phase 2 shipped except Web Analytics (a dashboard switch): per-post share images, BlogPosting JSON-LD, tag pages, table of contents, CI checks (astro check, internal links, Lighthouse ≥95 on PRs), PR previews with drafts, security headers with a build-time hashed CSP. Draft builds use `SHOW_DRAFTS=1`, which deploy builds reject.
 - v0.6: Card-based design replaces "minimal, text-first" (§5.5 rewritten); light/dark switch (FR-8) and reading time shipped, moved out of Phase 2.
@@ -83,7 +84,7 @@ Wes wants a personal site with a blog on his own domain, to build a professional
     links: { linkedin: "", github: "https://github.com/JHGelpi", x: "" },
   };
   ```
-- **FR-0a** **No employer name** anywhere on the site (bio, About, JSON-LD `worksFor`), **except the CV section of `/about/`**, which may name current and past employers. `/about/`'s meta description, share card and JSON-LD stay generic. Role descriptions elsewhere stay generic.
+- **FR-0a** *(Removed in v0.9.)* Employer names may appear anywhere on the site, including posts.
 
 ### 5.1 Content authoring
 - **FR-1** Posts live in `src/content/blog/` as `.md` or `.mdx`, one file (or folder with co-located images) per post.
@@ -167,7 +168,7 @@ Light grey page, white rounded cards, one accent colour, a sticky top bar with p
 - [ ] `https://geltech.dev/blog/<slug>/` serves a published post over HTTPS; `www` and `workers.dev` don't create duplicate indexed content.
 - [ ] `https://dishkept.geltech.dev` works exactly as before cutover.
 - [ ] `/projects/` links to Dishkept; nav works on every page.
-- [ ] The byline, About page, and JSON-LD read from `site.config.ts`; no employer name appears outside the CV section of `/about/`.
+- [ ] The byline, About page, and JSON-LD read from `site.config.ts`.
 - [ ] A post with `draft: true` is absent from the production site, RSS, and sitemap.
 - [ ] Invalid frontmatter fails the build with a clear error.
 - [ ] Pasting a post URL into LinkedIn Post Inspector shows the correct title, description, and image (deferred to the first real post).

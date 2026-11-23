@@ -30,7 +30,7 @@ npm run build      # production build to dist/
 npm run preview    # serve the built site locally
 npm run check      # type and content checks (astro check)
 npm test           # unit tests (node:test)
-npm run verify     # after a build: fails if dist/ has client JS, a draft, an employer name outside /about/, or a broken internal link
+npm run verify     # after a build: fails if dist/ has client JS, a draft, or a broken internal link
 npm run og         # regenerate public/og-default.png from site.config.ts
 ```
 
@@ -78,7 +78,7 @@ src/
   content/
     blog/               # posts (.md, images alongside)
     projects/           # one entry per app or project
-    pages/cv.md         # the CV shown on /about/ (the only place employers are named)
+    pages/cv.md         # the CV shown on /about/
     pages/now.md        # /now/ (draft: true until you write it; then it gets a footer link)
   pages/                # routes: /, /blog, /blog/[slug], /blog/tags/[tag], /og/blog/[slug].png (share cards), /[page] (e.g. /now/), /about, /projects, rss.xml, 404
   layouts/  components/ # BaseLayout, BaseHead (meta, OG, JSON-LD), Nav, theme switch, post and project cards

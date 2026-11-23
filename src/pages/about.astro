@@ -20,7 +20,6 @@ const icons: Record<string, { label: string; path: string }> = {
 const links = Object.entries(site.links).filter(([, url]) => url);
 ---
 
-<!-- Employer names are allowed only inside the CV section below (FR-0a); keep head and intro generic. -->
 <BaseLayout title="About" description={site.tagline} jsonLd={personJsonLd()}>
   <section class="card hero">
     <Image src={headshot} alt={`Portrait of ${site.name}`} width={120} height={120} densities={[1, 2]} class="headshot" loading="eager" />
