@@ -14,7 +14,7 @@ const projects = (await getProjects()).slice(0, 3);
 
 <BaseLayout title={site.name} description={site.tagline} jsonLd={personJsonLd()}>
   <section class="card hero">
-    <Image src={headshot} alt={site.name} width={96} height={96} class="headshot" loading="eager" />
+    <Image src={headshot} alt={site.name} width={96} height={96} densities={[1, 2]} class="headshot" loading="eager" />
     <div class="hero-text">
       <h1>{site.name}</h1>
       <p class="muted hero-tagline">{site.tagline}</p>

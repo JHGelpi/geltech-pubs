@@ -24,7 +24,7 @@ const links = Object.entries(site.links).filter(([, url]) => url);
 <BaseLayout title="About" description={site.tagline} jsonLd={personJsonLd()}>
 <div class="narrow">
   <section class="card hero">
-    <Image src={headshot} alt={`Portrait of ${site.name}`} width={120} height={120} class="headshot" loading="eager" />
+    <Image src={headshot} alt={`Portrait of ${site.name}`} width={120} height={120} densities={[1, 2]} class="headshot" loading="eager" />
     <div class="hero-text">
       <h1>{site.name}</h1>
       <p class="muted hero-tagline">{site.tagline}</p>
