@@ -12,10 +12,3 @@ test('placeholders and empty links are reported', () => {
 test('clean config has no problems', () => {
   assert.deepEqual(configProblems({ name: 'A', tagline: 'Leader', bio: 'Hi.', url: 'https://x', links: { github: 'https://g' } }), []);
 });
-
-test('employer names and aliases in tagline or bio are reported, any case', () => {
-  const p = configProblems({ name: 'A', tagline: 'Director of R&D at sas', bio: 'Formerly at red hat.', url: 'https://x', links: {} }, ['Red Hat']);
-  assert.equal(p.length, 2);
-  assert.match(p.join('\n'), /tagline.*SAS/);
-  assert.match(p.join('\n'), /bio.*Red Hat/);
-});

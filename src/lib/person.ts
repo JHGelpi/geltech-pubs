@@ -1,6 +1,6 @@
 import { site } from '../site.config';
 
-// FR-13: generic identity only. Never add worksFor (FR-0a).
+// FR-13: name, tagline and links from site.config.ts.
 export const personJsonLd = (): object => ({
   '@context': 'https://schema.org',
   '@type': 'Person',
