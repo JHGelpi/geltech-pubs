@@ -1,8 +1,9 @@
-# geltech.dev Personal Site & Blog — Product Spec v0.6
+# geltech.dev Personal Site & Blog — Product Spec v0.7
 
 **Owner:** Wes · **Status:** Ready for Claude Code · **Last updated:** 2026-11-21
 
 **Changelog**
+- v0.7: Phase 2 shipped except Web Analytics (a dashboard switch): per-post share images, BlogPosting JSON-LD, tag pages, table of contents, CI checks (astro check, internal links, Lighthouse ≥95 on PRs), PR previews with drafts, security headers with a build-time hashed CSP. Draft builds use `SHOW_DRAFTS=1`, which deploy builds reject.
 - v0.6: Card-based design replaces "minimal, text-first" (§5.5 rewritten); light/dark switch (FR-8) and reading time shipped, moved out of Phase 2.
 - v0.5: /about/ mirrors the CV site (jhgelpi.github.io/cv): same sections, CV sections as tabs (approved client JS, /about/ only), email address and Bluesky link shown; phone and city stay off the site.
 - v0.4: CV moved onto /about/ (employer names allowed only there); bio field; www redirect via dashboard rule; custom domain declared in wrangler.jsonc.
@@ -150,10 +151,10 @@ Light grey page, white rounded cards, one accent colour, a sticky top bar with p
 - DNS snapshot (G-1); deploy to Workers Static Assets; attach `geltech.dev` + `www` redirect; verify Dishkept is unaffected (G-5).
 - OG/Twitter meta tags with a default share image; README and license.
 
-**Phase 2: Polish**
-- Per-post generated OG images, JSON-LD, tags pages, table of contents. (Reading time and the dark mode toggle shipped in v0.6.)
-- CI checks (astro check, links, Lighthouse budget), PR previews, security headers.
-- Cloudflare Web Analytics.
+**Phase 2: Polish** (shipped in v0.7 except analytics)
+- ~~Per-post generated OG images, JSON-LD, tags pages, table of contents.~~ (Reading time and the dark mode toggle shipped in v0.6.)
+- ~~CI checks (astro check, links, Lighthouse budget), PR previews, security headers.~~ External links are not checked.
+- Cloudflare Web Analytics: enable in the dashboard; the CSP already allows the beacon.
 
 **Phase 3: Later / optional**
 - Email subscriptions via an external tool (e.g. Buttondown), fed from RSS, if readers ask for it.
