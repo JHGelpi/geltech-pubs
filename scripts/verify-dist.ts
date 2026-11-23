@@ -1,4 +1,4 @@
-// Post-build guard: fails if dist/ ships unapproved client JS, the sample draft, an employer name outside /about/'s body,
+// Post-build guard: fails if dist/ ships unapproved client JS, any draft post or page, an employer name outside /about/'s body,
 // or a broken internal link.
 // Usage: node scripts/verify-dist.ts dist
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
@@ -19,11 +19,20 @@ export function employersFromCv(md: string): string[] {
 
 const escapeHtml = (s: string) => s.replace(/&/g, '&amp;');
 
-export function verifyDist(files: Map<string, string>, employers: string[]): string[] {
+/** URL paths (`/blog/<slug>/`, `/<page>/`) of every `draft: true` entry, read from frontmatter. */
+export function draftPaths(dir: string, urlPrefix: string): string[] {
+  return readdirSync(dir)
+    .filter((f) => /\.mdx?$/.test(f) && /^draft:\s*true\s*$/m.test(readFileSync(join(dir, f), 'utf8').split(/^---$/m)[1] ?? ''))
+    .map((f) => `${urlPrefix}${f.replace(/\.mdx?$/, '')}/`);
+}
+
+export function verifyDist(files: Map<string, string>, employers: string[], drafts: string[] = []): string[] {
   const problems: string[] = [];
   for (const [path, content] of files) {
-    // shortcut: hard-coded sample slug, upgrade to reading draft slugs from src/content/blog when more drafts exist
-    if (path.includes('hello-world')) problems.push(`${path}: draft sample post was built`);
+    // Drafts never ship (CLAUDE.md rule 3): no page of their own, and no link from pages, RSS or sitemap.
+    for (const d of drafts) {
+      if (path.startsWith(d.slice(1)) || content.includes(d)) problems.push(`${path}: draft ${d} leaked`);
+    }
 
     const isAbout = path === 'about/index.html';
     // Approved scripts (CLAUDE.md rule 2): the theme switch on every page, the CV tabs on /about/.
@@ -80,7 +89,7 @@ if (import.meta.main) {
   const employers = employersFromCv(readFileSync('src/content/pages/cv.md', 'utf8'));
   const files = readTree(dir);
   const problems = [
-    ...verifyDist(files, employers),
+    ...verifyDist(files, employers, [...draftPaths('src/content/blog', '/blog/'), ...draftPaths('src/content/pages', '/')]),
     ...brokenLinks(files, (p) => existsSync(join(dir, p)), new URL(site.url).origin),
   ];
   if (problems.length) {
