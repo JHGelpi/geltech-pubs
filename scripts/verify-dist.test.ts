@@ -16,7 +16,7 @@ test('flags script tags, draft pages and employer leaks', () => {
     ['about/index.html', '<head><title>Red Hat</title></head><body>Red Hat</body>'],
     ['rss.xml', '<rss></rss>'],
   ]);
-  const p = verifyDist(files, ['Red Hat']).join('\n');
+  const p = verifyDist(files, ['Red Hat'], ['/blog/hello-world/']).join('\n');
   assert.match(p, /index\.html.*script/);
   assert.match(p, /hello-world/);
   assert.match(p, /^index\.html.*Red Hat/m);
@@ -61,4 +61,13 @@ test('brokenLinks finds missing pages, assets and anchors, and ignores external 
   ]);
   const p = brokenLinks(files, (f) => f === 'x.png', 'https://geltech.dev');
   assert.deepEqual(p, ['index.html: broken link /blog/', 'index.html: no #nope for #nope', 'rss.xml: broken link https://geltech.dev/gone/']);
+});
+
+test('a draft linked from another page or feed is a leak, even without its own page', () => {
+  const files = new Map([
+    ['rss.xml', '<link>https://geltech.dev/blog/wip/</link>'],
+    ['index.html', '<a href="/now/">Now</a>'],
+    ['blog/index.html', '<a href="/blog/published/">ok</a>'],
+  ]);
+  assert.deepEqual(verifyDist(files, [], ['/blog/wip/', '/now/']), ['rss.xml: draft /blog/wip/ leaked', 'index.html: draft /now/ leaked']);
 });
