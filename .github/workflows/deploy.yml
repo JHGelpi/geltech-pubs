@@ -89,8 +89,18 @@ jobs:
       - id: url
         env:
           OUT: ${{ steps.upload.outputs.command-output }}
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           url=$(grep -oE 'Alias URL: https://\S+' <<<"$OUT" | cut -d' ' -f3 | head -1)
-          test -n "$url" || { echo "::error::No preview URL. Preview URLs turn on with the first main deploy that has preview_urls: true, and need a workers.dev subdomain on the account."; exit 1; }
+          if [ -z "$url" ]; then
+            # Read-only: the same endpoint wrangler reads. Prints only {enabled, previews_enabled}.
+            echo "Worker subdomain settings:"
+            curl -fsS -H "Authorization: Bearer $CF_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT/workers/scripts/geltech-dev/subdomain" \
+              | jq -c '{enabled: .result.enabled, previews_enabled: .result.previews_enabled, errors}' || true
+            echo "::error::No preview URL in wrangler output. previews_enabled must be true (set by preview_urls in wrangler.jsonc on a main deploy)."
+            exit 1
+          fi
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Preview: $url" >> "$GITHUB_STEP_SUMMARY"
