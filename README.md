@@ -14,7 +14,7 @@ Source for [geltech.dev](https://geltech.dev): my personal site and blog, writin
 | Site generator | [Astro](https://astro.build), static output |
 | Content | Markdown/MDX in Git, validated by content-collection schemas |
 | Hosting | Cloudflare Workers with Static Assets |
-| CI/CD | GitHub Actions → `wrangler deploy` on push to `main`; PRs run the same checks without deploying (PR previews: Phase 2) |
+| CI/CD | GitHub Actions → `wrangler deploy` on push to `main`; PRs run the same checks, a Lighthouse budget, and upload a preview with drafts |
 | Analytics | Cloudflare Web Analytics, cookieless (Phase 2) |
 
 No database, no server-side code, no third-party trackers. Pages ship with essentially zero JavaScript.
@@ -94,7 +94,7 @@ wrangler.jsonc          # Cloudflare Worker config (assets-only)
 
 ## Deployment
 
-Deploys happen only from CI (`.github/workflows/deploy.yml`) on push to `main`; pull requests run the same checks but skip the deploy step. Never run `wrangler deploy` locally.
+Deploys happen only from CI (`.github/workflows/deploy.yml`) on push to `main`; pull requests run the same checks but skip the deploy step. Each PR also gets a preview (drafts included) at `pr-<number>-geltech-dev.<subdomain>.workers.dev`, linked as "View deployment" on the PR; it's an uploaded version, never deployed to `geltech.dev`, and marked `noindex`. Never promote a preview version in the Cloudflare dashboard: it contains drafts. Never run `wrangler deploy` locally.
 
 `wrangler.jsonc` defines an assets-only Worker named `geltech-dev` with `geltech.dev` as its Custom Domain and no `workers.dev` route. `www` → apex is a Cloudflare Redirect Rule, not code. One-time setup (DNS snapshot, API token, secrets, redirect, smoke tests) is in [`docs/launch-checklist.md`](docs/launch-checklist.md).
 

@@ -5,6 +5,9 @@
   "compatibility_date": "2026-11-21",
   // No workers.dev route, so there's no duplicate copy to index.
   "workers_dev": false,
+  // PR previews: CI uploads (never deploys) a version per PR at pr-<n>-geltech-dev.<subdomain>.workers.dev.
+  // public/_headers marks every workers.dev URL noindex.
+  "preview_urls": true,
   // Only the apex. Never add other hostnames here (G-2); www is a dashboard Redirect Rule.
   "routes": [{ "pattern": "geltech.dev", "custom_domain": true }],
   "assets": { "directory": "./dist", "not_found_handling": "404-page" }
