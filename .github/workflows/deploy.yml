@@ -85,12 +85,12 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: versions upload --preview-alias pr-${{ github.event.pull_request.number }} --message "PR #${{ github.event.pull_request.number }}"
+          command: versions upload --preview-alias pr-${{ github.event.pull_request.number }} --message pr-${{ github.event.pull_request.number }}
       - id: url
         env:
           OUT: ${{ steps.upload.outputs.command-output }}
         run: |
           url=$(grep -oE 'Alias URL: https://\S+' <<<"$OUT" | cut -d' ' -f3 | head -1)
-          test -n "$url" || { echo "No preview alias URL in wrangler output"; exit 1; }
+          test -n "$url" || { echo "::error::No preview URL. Preview URLs turn on with the first main deploy that has preview_urls: true, and need a workers.dev subdomain on the account."; exit 1; }
           echo "url=$url" >> "$GITHUB_OUTPUT"
           echo "Preview: $url" >> "$GITHUB_STEP_SUMMARY"
