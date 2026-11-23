@@ -3,7 +3,8 @@ import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { site } from '../../site.config';
 import { getPublishedPosts } from '../../lib/content';
-import { readingMinutes, slugify } from '../../lib/posts';
+import { readingMinutes, slugify, tocHeadings } from '../../lib/posts';
+import { blogPostingJsonLd } from '../../lib/person';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts(); // newest first
@@ -14,14 +15,16 @@ export async function getStaticPaths() {
 }
 
 const { post, newer, older } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const toc = tocHeadings(headings);
 const { title, description, pubDate, updatedDate, tags, heroImage, canonicalUrl } = post.data;
 const url = new URL(`/blog/${post.id}/`, site.url).href;
+const jsonLd = blogPostingJsonLd({ ...post.data, url });
 const enc = encodeURIComponent;
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 ---
 
-<BaseLayout title={title} description={description} type="article" canonical={canonicalUrl} image={heroImage}>
+<BaseLayout title={title} description={description} type="article" canonical={canonicalUrl} image={heroImage} jsonLd={jsonLd}>
   <article class="card post">
     <header class="post-header">
       {tags.length > 0 && <ul class="chips" aria-label="Tags">{tags.map((t) => <li><a class="chip" href={`/blog/tags/${slugify(t)}/`}>{t}</a></li>)}</ul>}
@@ -32,6 +35,12 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         {' · '}{readingMinutes(post.body ?? '')} min read
       </p>
     </header>
+    {toc.length > 0 && (
+      <nav class="toc" aria-labelledby="toc-title">
+        <p id="toc-title" class="toc-title">On this page</p>
+        <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+      </nav>
+    )}
     <div class="prose">
       <Content />
     </div>
