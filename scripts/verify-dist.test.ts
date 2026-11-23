@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { employersFromCv, verifyDist } from './verify-dist.ts';
+import { employersFromCv, verifyDist, brokenLinks } from './verify-dist.ts';
 
 test('employersFromCv', () => {
   assert.deepEqual(
@@ -50,4 +50,15 @@ test('the theme-init script is allowed on every page; other scripts are not', ()
   const bad = verifyDist(new Map([['blog/a/index.html', '<script id="theme-init"></script><script src="t.js"></script>']]), []);
   assert.equal(bad.length, 1);
   assert.match(bad[0]!, /t\.js/);
+});
+
+test('brokenLinks finds missing pages, assets and anchors, and ignores external links', () => {
+  const files = new Map([
+    ['index.html', '<a href="/about/">a</a><a href="/blog/">b</a><a href="#main">m</a><a href="#nope">n</a><img src="/x.png">'
+      + '<a href="https://geltech.dev/about/#cv">c</a><a href="https://example.com/">e</a><a href="//cdn.x/y">p</a><main id="main"></main>'],
+    ['about/index.html', '<section id="cv"></section>'],
+    ['rss.xml', '<link>https://geltech.dev/gone/</link>'],
+  ]);
+  const p = brokenLinks(files, (f) => f === 'x.png', 'https://geltech.dev');
+  assert.deepEqual(p, ['index.html: broken link /blog/', 'index.html: no #nope for #nope', 'rss.xml: broken link https://geltech.dev/gone/']);
 });
