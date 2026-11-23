@@ -5,7 +5,7 @@ import { runInNewContext } from 'node:vm';
 
 const src = readFileSync(new URL('./theme-init.js', import.meta.url), 'utf8');
 
-/** Runs the head script against a minimal fake page; returns handles to drive it. */
+/** Runs the theme script against a minimal fake page; returns handles to drive it. */
 function page({ saved = null as string | null, osDark = false, storageThrows = false } = {}) {
   const listeners: Record<string, ((e?: unknown) => void)[]> = {};
   const mqListeners: (() => void)[] = [];

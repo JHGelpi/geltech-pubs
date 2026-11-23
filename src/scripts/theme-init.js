@@ -1,4 +1,4 @@
-// Theme switch (CLAUDE.md rule 2). Inlined into <head> by ThemeScript.astro so a saved theme never flashes.
+// Theme switch (CLAUDE.md rule 2). Inlined at the top of <body> by ThemeScript.astro so a saved theme never flashes.
 (() => {
   const root = document.documentElement;
   const dark = matchMedia('(prefers-color-scheme: dark)');

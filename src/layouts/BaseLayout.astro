@@ -2,6 +2,7 @@
 import BaseHead, { type Props as HeadProps } from '../components/BaseHead.astro';
 import Nav from '../components/Nav.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import ThemeScript from '../components/ThemeScript.astro';
 import { site } from '../site.config';
 
 export type Props = HeadProps;
@@ -14,6 +15,10 @@ const host = new URL(site.url).host;
     <BaseHead {...Astro.props} />
   </head>
   <body>
+    <!-- First in <body>, not in <head>: Astro puts the stylesheet last in <head>, and a script above it
+         lets Firefox paint before the CSS arrives (flash of plain text). Here it waits for the CSS
+         and still runs before any content, so there's no theme flash either. -->
+    <ThemeScript />
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <div class="container bar">

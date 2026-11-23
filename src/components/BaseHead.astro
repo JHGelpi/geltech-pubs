@@ -1,6 +1,5 @@
 ---
 import { site } from '../site.config';
-import ThemeScript from './ThemeScript.astro';
 import '../styles/global.css';
 
 export interface Props {
@@ -24,7 +23,6 @@ const imageUrl = new URL(image, site.url).href;
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="color-scheme" content="light dark" />
-<ThemeScript />
 <title>{fullTitle}</title>
 <link rel="icon" href="/favicon.ico" sizes="32x32" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

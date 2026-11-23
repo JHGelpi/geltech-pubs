@@ -82,7 +82,7 @@ src/
   pages/                # routes: /, /blog, /blog/[slug], /blog/tags/[tag], /og/blog/[slug].png (share cards), /about, /projects, rss.xml, 404
   layouts/  components/ # BaseLayout, BaseHead (meta, OG, JSON-LD), Nav, theme switch, post and project cards
   lib/                  # draft filter, reading time, config guard, JSON-LD, share-card SVG
-  scripts/theme-init.js # the light/dark switch, inlined into every page's <head>
+  scripts/theme-init.js # the light/dark switch, inlined at the top of every page's <body>
   styles/global.css
 public/                 # copied as-is (robots.txt, _headers security headers, og-default.png)
 scripts/                # new-post, verify-dist, og-default, csp (writes the CSP into dist/_headers on build)
