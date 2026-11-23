@@ -8,4 +8,4 @@ draft: false
 Currently my focus is on three major topics:
 - Earning my MBA from NC State University
 - Contributing to making lives better for people with Type 1 Diabetes
-- Providing thought leadership in the space of Software and Data Engineering
+- Building my knowledge and expertise as a leader of Software Engineering teams
