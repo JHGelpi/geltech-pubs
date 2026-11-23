@@ -240,6 +240,9 @@ a.chip:hover { text-decoration: underline; }
 .page-header h1 { margin-bottom: var(--s1); }
 .page-header p { margin: 0; }
 .more { margin-top: var(--s3); }
+.now-card .prose > :first-child { margin-top: 0; }
+.now-card .prose > :last-child { margin-bottom: 0; }
+.now-meta { margin: var(--s2) 0 0; font-size: 0.9rem; }
 
 /* Post card */
 .post-card { display: flex; flex-direction: column; }
