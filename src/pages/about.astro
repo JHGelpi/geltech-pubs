@@ -22,7 +22,6 @@ const links = Object.entries(site.links).filter(([, url]) => url);
 
 <!-- Employer names are allowed only inside the CV section below (FR-0a); keep head and intro generic. -->
 <BaseLayout title="About" description={site.tagline} jsonLd={personJsonLd()}>
-<div class="narrow">
   <section class="card hero">
     <Image src={headshot} alt={`Portrait of ${site.name}`} width={120} height={120} densities={[1, 2]} class="headshot" loading="eager" />
     <div class="hero-text">
@@ -46,7 +45,6 @@ const links = Object.entries(site.links).filter(([, url]) => url);
     <h2 id="cv" class="visually-hidden">Curriculum vitae</h2>
     <Content />
   </section>
-</div>
 
   <a href="#" class="return-to-top" aria-label="Return to top">↑</a>
 </BaseLayout>
@@ -80,6 +78,7 @@ const links = Object.entries(site.links).filter(([, url]) => url);
         panels[j]!.hidden = i !== j;
       });
       if (focus) tabs[i]!.focus();
+      fit(); // the selected label is bold, so the row can get wider
     };
     list.addEventListener('click', (e) => {
       const i = tabs.indexOf((e.target as Element).closest('button')!);
@@ -94,6 +93,13 @@ const links = Object.entries(site.links).filter(([, url]) => url);
       }
     });
     panels[0]!.before(list);
+    // One underlined row where it fits, the CV site's stacked list where it doesn't. Measured, not a breakpoint,
+    // so the row never runs off the edge whatever the font.
+    const fit = () => {
+      list.classList.remove('stacked');
+      list.classList.toggle('stacked', list.scrollWidth > list.clientWidth);
+    };
+    addEventListener('resize', fit, { passive: true });
     // Open the tab holding a linked anchor (e.g. /about/#philanthropy).
     const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
     select(Math.max(0, panels.findIndex((p) => target && p.contains(target))));
