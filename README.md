@@ -30,7 +30,7 @@ npm run build      # production build to dist/
 npm run preview    # serve the built site locally
 npm run check      # type and content checks (astro check)
 npm test           # unit tests (node:test)
-npm run verify     # after a build: fails if dist/ has client JS, a draft, or an employer name outside /about/
+npm run verify     # after a build: fails if dist/ has client JS, a draft, an employer name outside /about/, or a broken internal link
 npm run og         # regenerate public/og-default.png from site.config.ts
 ```
 
