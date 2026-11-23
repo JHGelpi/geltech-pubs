@@ -1,8 +1,9 @@
-# geltech.dev Personal Site & Blog — Product Spec v0.7
+# geltech.dev Personal Site & Blog — Product Spec v0.8
 
 **Owner:** Wes · **Status:** Ready for Claude Code · **Last updated:** 2026-11-21
 
 **Changelog**
+- v0.8: D-6 changed: a manual light/dark choice lasts for the browser session (session cookie, shared by every page and tab), not forever.
 - v0.7: Phase 2 shipped except Web Analytics (a dashboard switch): per-post share images, BlogPosting JSON-LD, tag pages, table of contents, CI checks (astro check, internal links, Lighthouse ≥95 on PRs), PR previews with drafts, security headers with a build-time hashed CSP. Draft builds use `SHOW_DRAFTS=1`, which deploy builds reject.
 - v0.6: Card-based design replaces "minimal, text-first" (§5.5 rewritten); light/dark switch (FR-8) and reading time shipped, moved out of Phase 2.
 - v0.5: /about/ mirrors the CV site (jhgelpi.github.io/cv): same sections, CV sections as tabs (approved client JS, /about/ only), email address and Bluesky link shown; phone and city stay off the site.
@@ -135,7 +136,7 @@ Light grey page, white rounded cards, one accent colour, a sticky top bar with p
 - **D-3** Home leads with a hero card holding the bio, then the latest posts as cards (empty state when there are none).
 - **D-4** Project cards are text-led (name, status, one line, link); screenshots optional.
 - **D-5** Content first on post pages: no sidebars or widgets around the article.
-- **D-6** The theme follows the device setting until the reader picks one with the switch; the choice is remembered on that device. No flash of the wrong theme; the switch is hidden when JS is off.
+- **D-6** The theme follows the device setting until the reader picks one with the switch; the choice holds on every page and tab for the rest of the browser session (a host-only session cookie, G-4) and is forgotten when the browser closes. No flash of the wrong theme; the switch is hidden when JS is off.
 
 ## 6. Publishing workflow (target)
 
