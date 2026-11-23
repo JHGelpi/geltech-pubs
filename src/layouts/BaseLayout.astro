@@ -4,9 +4,11 @@ import Nav from '../components/Nav.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import ThemeScript from '../components/ThemeScript.astro';
 import { site } from '../site.config';
+import { getPublishedPages } from '../lib/content';
 
 export type Props = HeadProps;
 const host = new URL(site.url).host;
+const footerPages = await getPublishedPages();
 ---
 
 <!doctype html>
@@ -31,7 +33,7 @@ const host = new URL(site.url).host;
       <slot />
     </main>
     <footer class="site-footer container">
-      <p>© {new Date().getFullYear()} {site.name} · <a href="/rss.xml">RSS</a></p>
+      <p>© {new Date().getFullYear()} {site.name} · {footerPages.map((p) => <><a href={`/${p.id}/`}>{p.data.title}</a> · </>)}<a href="/rss.xml">RSS</a></p>
     </footer>
   </body>
 </html>
