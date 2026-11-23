@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { isPublished, byNewest, frontmatterIssues, readingMinutes, postsByTag } from './posts.ts';
+import { isPublished, byNewest, frontmatterIssues, readingMinutes, postsByTag, tocHeadings } from './posts.ts';
 
 test('drafts hidden in prod, shown in dev', () => {
   assert.equal(isPublished({ draft: true }, true), false);
@@ -49,4 +49,11 @@ test('a tag with no letters or digits is a frontmatter error', () => {
   const base = { draft: false, description: 'd', pubDate: new Date(0) };
   assert.equal(frontmatterIssues({ ...base, tags: ['🚀'] }, new Date(0))[0]?.path, 'tags');
   assert.deepEqual(frontmatterIssues({ ...base, tags: ['ok'] }, new Date(0)), []);
+});
+
+test('table of contents needs 3+ H2s and lists only H2s', () => {
+  const h = (depth: number) => ({ depth, slug: `s${depth}`, text: 't' });
+  assert.deepEqual(tocHeadings([h(2), h(3), h(2)]), []);
+  assert.deepEqual(tocHeadings([h(2), h(2), { depth: 2, slug: 'footnote-label', text: 'Footnotes' }]), []);
+  assert.deepEqual(tocHeadings([h(2), h(3), h(2), h(2)]).map((x) => x.depth), [2, 2, 2]);
 });

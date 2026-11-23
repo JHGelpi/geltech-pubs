@@ -265,6 +265,9 @@ a.chip:hover { text-decoration: underline; }
 .post-header { margin-bottom: var(--s4); }
 .post-header h1 { margin: 0 0 var(--s2); }
 .post-header p { margin: 0; }
+.toc { margin: 0 0 var(--s4); padding: var(--s2) var(--s3); border-left: 3px solid var(--border); }
+.toc-title { margin: 0 0 var(--s1); font-weight: 600; }
+.toc ol { margin: 0; padding-left: 1.25rem; }
 .prose > :first-child { margin-top: 0; }
 .prose blockquote { margin: var(--s3) 0; padding: var(--s1) var(--s3); border-left: 3px solid var(--accent); color: var(--muted); }
 .prose li + li { margin-top: var(--s1); }

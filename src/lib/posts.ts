@@ -54,3 +54,10 @@ export function frontmatterIssues(
 /** Minutes to read at 225 words a minute, rounded up, never 0. */
 export const readingMinutes = (text: string): number =>
   Math.max(1, Math.ceil(text.split(/\s+/).filter(Boolean).length / 225));
+
+/** FR-7: a table of contents only for posts with 3+ H2s; it lists the H2s. */
+export const tocHeadings = <T extends { depth: number; slug: string }>(headings: T[]): T[] => {
+  // footnote-label is the hidden "Footnotes" heading GFM adds, not one the author wrote.
+  const h2s = headings.filter((h) => h.depth === 2 && h.slug !== 'footnote-label');
+  return h2s.length >= 3 ? h2s : [];
+};
