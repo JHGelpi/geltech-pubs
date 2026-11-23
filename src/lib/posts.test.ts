@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { isPublished, byNewest, frontmatterIssues, readingMinutes } from './posts.ts';
+import { isPublished, byNewest, frontmatterIssues, readingMinutes, postsByTag } from './posts.ts';
 
 test('drafts hidden in prod, shown in dev', () => {
   assert.equal(isPublished({ draft: true }, true), false);
@@ -33,4 +33,20 @@ test('reading time is words / 225, rounded up, at least 1', () => {
   assert.equal(readingMinutes('word '.repeat(225)), 1);
   assert.equal(readingMinutes('word '.repeat(226)), 2);
   assert.equal(readingMinutes('a\n\nb\tc   d'), 1);
+});
+
+test('postsByTag groups by slug, keeps order and the first spelling', () => {
+  const a = { data: { tags: ['Data Engineering', 'ETL', 'etl'] } };
+  const b = { data: { tags: ['data engineering'] } };
+  const byTag = postsByTag([a, b]);
+  assert.deepEqual([...byTag.keys()], ['data-engineering', 'etl']);
+  assert.equal(byTag.get('data-engineering')?.name, 'Data Engineering');
+  assert.deepEqual(byTag.get('data-engineering')?.posts, [a, b]);
+  assert.deepEqual(byTag.get('etl')?.posts, [a]);
+});
+
+test('a tag with no letters or digits is a frontmatter error', () => {
+  const base = { draft: false, description: 'd', pubDate: new Date(0) };
+  assert.equal(frontmatterIssues({ ...base, tags: ['🚀'] }, new Date(0))[0]?.path, 'tags');
+  assert.deepEqual(frontmatterIssues({ ...base, tags: ['ok'] }, new Date(0)), []);
 });
