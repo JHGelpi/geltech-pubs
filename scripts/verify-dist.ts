@@ -40,7 +40,7 @@ export function verifyDist(files: Map<string, string>, employers: string[]): str
   return problems;
 }
 
-function readTree(dir: string, root = dir, out = new Map<string, string>()): Map<string, string> {
+export function readTree(dir: string, root = dir, out = new Map<string, string>()): Map<string, string> {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const full = join(dir, entry.name);
     if (entry.isDirectory()) readTree(full, root, out);

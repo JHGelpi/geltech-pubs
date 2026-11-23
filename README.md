@@ -84,8 +84,8 @@ src/
   lib/                  # draft filter, reading time, config guard, JSON-LD
   scripts/theme-init.js # the light/dark switch, inlined into every page's <head>
   styles/global.css
-public/                 # copied as-is (robots.txt, _headers, og-default.png)
-scripts/                # new-post, verify-dist, og-default
+public/                 # copied as-is (robots.txt, _headers security headers, og-default.png)
+scripts/                # new-post, verify-dist, og-default, csp (writes the CSP into dist/_headers on build)
 docs/SPEC.md            # product spec and acceptance criteria
 docs/launch-checklist.md # one-time manual steps (DNS, secrets, redirect)
 wrangler.jsonc          # Cloudflare Worker config (assets-only)

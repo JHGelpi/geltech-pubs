@@ -1,2 +1,12 @@
+# Security headers for every page (FR-20). The CSP is appended at build time by scripts/csp.ts.
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  X-Frame-Options: DENY
+
+# HSTS above must never add includeSubDomains (G-3): it would force HTTPS rules onto dishkept and other apps.
+
 https://:version.:subdomain.workers.dev/*
   X-Robots-Tag: noindex
