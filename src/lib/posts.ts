@@ -4,13 +4,35 @@ export const isPublished = (data: { draft: boolean }, prod: boolean): boolean =>
 export const byNewest = <T extends { data: { pubDate: Date } }>(a: T, b: T): number =>
   b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
 
-type Issue = { path: 'description' | 'pubDate' | 'updatedDate'; message: string };
+export const slugify = (text: string): string =>
+  text
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+/** Posts grouped by tag slug, in input order; the first spelling seen names the tag. */
+export function postsByTag<T extends { data: { tags: string[] } }>(posts: T[]): Map<string, { name: string; posts: T[] }> {
+  const byTag = new Map<string, { name: string; posts: T[] }>();
+  for (const post of posts) {
+    for (const name of post.data.tags) {
+      const slug = slugify(name);
+      if (!byTag.has(slug)) byTag.set(slug, { name, posts: [] });
+      const entry = byTag.get(slug)!;
+      if (!entry.posts.includes(post)) entry.posts.push(post); // "ETL" and "etl" on one post
+    }
+  }
+  return byTag;
+}
+
+type Issue = { path: 'description' | 'pubDate' | 'updatedDate' | 'tags'; message: string };
 const DAY = 24 * 60 * 60 * 1000;
 
 /** Checks Zod can't express per field: published posts need a description (share cards),
  *  and a date over a day ahead is almost always YAML rolling an impossible date (2026-13-45) forward. */
 export function frontmatterIssues(
-  data: { draft: boolean; description: string; pubDate: Date; updatedDate?: Date },
+  data: { draft: boolean; description: string; pubDate: Date; updatedDate?: Date; tags?: string[] },
   now: Date,
 ): Issue[] {
   const issues: Issue[] = [];
@@ -22,6 +44,9 @@ export function frontmatterIssues(
     if (d && d.valueOf() > now.valueOf() + DAY) {
       issues.push({ path: key, message: `${d.toISOString().slice(0, 10)} is in the future; check for an impossible date like month 13.` });
     }
+  }
+  for (const tag of data.tags ?? []) {
+    if (!slugify(tag)) issues.push({ path: 'tags', message: `Tag "${tag}" needs at least one letter or digit (it becomes the /blog/tags/<tag>/ URL).` });
   }
   return issues;
 }

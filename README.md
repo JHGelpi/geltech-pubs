@@ -79,7 +79,7 @@ src/
     blog/               # posts (.md, images alongside)
     projects/           # one entry per app or project
     pages/cv.md         # the CV shown on /about/ (the only place employers are named)
-  pages/                # routes: /, /blog, /blog/[slug], /about, /projects, rss.xml, 404
+  pages/                # routes: /, /blog, /blog/[slug], /blog/tags/[tag], /about, /projects, rss.xml, 404
   layouts/  components/ # BaseLayout, BaseHead (meta, OG, JSON-LD), Nav, theme switch, post and project cards
   lib/                  # draft filter, reading time, config guard, JSON-LD
   scripts/theme-init.js # the light/dark switch, inlined into every page's <head>

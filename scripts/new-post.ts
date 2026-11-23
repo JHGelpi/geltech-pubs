@@ -1,14 +1,7 @@
 // Scaffold a draft post. Usage: npm run new-post "Title" [-- --private]
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
-
-export const slugify = (title: string): string =>
-  title
-    .normalize('NFKD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+import { slugify } from '../src/lib/posts.ts';
 
 export const frontmatter = (title: string, today: string): string =>
   ['---', `title: ${JSON.stringify(title)}`, 'description: ""', `pubDate: ${today}`, 'tags: []', 'draft: true', '---', '', ''].join('\n');

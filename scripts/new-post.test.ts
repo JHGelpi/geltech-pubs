@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { slugify, frontmatter, wantsPrivate } from './new-post.ts';
+import { frontmatter, wantsPrivate } from './new-post.ts';
+import { slugify } from '../src/lib/posts.ts';
 
 test('slugify', () => {
   assert.equal(slugify('Hello, World!'), 'hello-world');

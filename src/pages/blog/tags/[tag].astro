@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostList from '../../../components/PostList.astro';
+import { getPublishedPosts } from '../../../lib/content';
+import { postsByTag } from '../../../lib/posts';
+
+export async function getStaticPaths() {
+  // Published posts only, so a tag used just by drafts gets no page.
+  return [...postsByTag(await getPublishedPosts())].map(([tag, { name, posts }]) => ({ params: { tag }, props: { name, posts } }));
+}
+
+const { name, posts } = Astro.props;
+const description = `${posts.length} ${posts.length === 1 ? 'post' : 'posts'} tagged “${name}”.`;
+---
+
+<BaseLayout title={`Posts tagged “${name}”`} description={description}>
+  <header class="page-header">
+    <h1>Posts tagged “{name}”</h1>
+    <p class="muted">{description} <a href="/blog/">All posts</a></p>
+  </header>
+  <PostList posts={posts} headingLevel="h2" />
+</BaseLayout>
