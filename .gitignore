@@ -17,6 +17,11 @@ dist/
 # private drafts (never committed — see README)
 drafts/
 
+# research sources and Editor output (private) — keep only the README and template
+research/*
+!research/README.md
+!research/_TEMPLATE.md
+
 # Lighthouse CI output
 .lighthouseci/
 

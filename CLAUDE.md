@@ -53,6 +53,13 @@ These come from the spec and must hold in every change:
 - Edit or rewrite post content in `src/content/blog/`. That's the author's writing. You may fix frontmatter that fails validation, and you should point out typos rather than fix them silently.
 - Add analytics, tracking, comments, newsletters or any third-party service.
 
+## Editor agent and research folder
+
+- `.claude/agents/editor.md` defines the **editor** subagent, run through `/review <slug>` and `/talking-points <slug>` (`.claude/skills/`). It reviews drafts and prepares cited talking points. **It never authors post content.** The same rule applies to you: don't draft or rewrite posts, even if asked through another route.
+- `research/` is private and git-ignored except `README.md` and `_TEMPLATE.md`. Files are keyed by post slug: `research/<slug>.md` (sources), `research/<slug>/` (source files), `research/<slug>.review.md`, `research/<slug>.talking-points.md`. Never commit anything else from `research/`, and never move research content into `src/` or `docs/`.
+- `.claude/hooks/editor-write-guard.mjs` restricts the editor's writes to its two report files. Don't loosen it without asking.
+- `docs/STYLE.md` is the author's style guide. Don't change it unless asked.
+
 ## Conventions
 
 - **Branches:** `feat/…`, `fix/…`, `chore/…` for code; `post/<slug>` for writing. Open a PR; never push directly to `main`.

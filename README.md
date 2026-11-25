@@ -61,10 +61,19 @@ canonicalUrl: ""             # optional; only for posts first published elsewher
 
 > **This repo is public.** Anything committed, including drafts, can be read on GitHub. Use `--private` for anything not ready to be seen.
 
+### Research and editorial review (Claude Code)
+
+An **Editor** subagent helps before and after drafting, but never writes posts:
+
+- `/talking-points <slug>` turns the sources in `research/<slug>.md` into cited talking points, counterarguments, questions and a topics-only outline.
+- `/review <slug>` reviews a draft for mechanics, clarity, argument, fact accuracy against the sources, voice, audience fit and the share card, using [`docs/STYLE.md`](docs/STYLE.md).
+
+Both write reports into `research/`, which stays private (git-ignored). See [`research/README.md`](research/README.md).
+
 ### Publishing
 
 1. Push the branch and open a pull request.
-2. Check the post locally with `npm run dev` (PR preview URLs and CI checks on PRs arrive in Phase 2).
+2. Optionally run `/review <slug>` and work through the report. CI runs the checks and posts a **preview URL** (drafts included) as "View deployment" on the PR; check the page and its share card there.
 3. Set `draft: false`, merge to `main`. CI tests, builds and deploys to production.
 4. Share the link on LinkedIn and X.
 
@@ -88,9 +97,12 @@ src/
 public/                 # copied as-is (robots.txt, _headers security headers, og-default.png)
 scripts/                # new-post, verify-dist, og-default, csp (writes the CSP into dist/_headers on build)
 docs/SPEC.md            # product spec and acceptance criteria
+docs/STYLE.md           # style guide the Editor agent applies
 docs/launch-checklist.md # one-time manual steps (DNS, secrets, redirect)
 wrangler.jsonc          # Cloudflare Worker config (assets-only)
 .github/workflows/      # CI and deploy
+.claude/                # Editor subagent, /review and /talking-points skills, write-guard hook
+research/               # private sources and Editor reports (git-ignored except README and template)
 ```
 
 ## Deployment
